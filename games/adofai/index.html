@@ -45,7 +45,7 @@ button{color:#ffcf65;background:#252525;border:1px solid #d6a538;border-radius:8
 <script>
 "use strict";
 // Build and StreamingAssets must be alongside this page.
-const BUILD="Build/", VERSION="velocify-routing-7", PARTS={data:9,wasm:7};
+const BUILD="Build/", VERSION="asteria-routing-7", PARTS={data:9,wasm:7};
 const canvas=document.getElementById("unity-canvas"), loading=document.getElementById("loading"), status=document.getElementById("status"), progress=document.getElementById("tinkle-progress"), retry=document.getElementById("retry");
 const objectUrls=[];
 let unityInstance,failed=false,completed=0;
@@ -90,7 +90,7 @@ document.getElementById("play").addEventListener("click",()=>{
 });
 let lastProgress=0;
 function setProgress(value){lastProgress=Math.max(lastProgress,Math.min(100,value*100));progress.style.width=lastProgress+"%";document.getElementById("tinkle-percent").textContent=Math.floor(lastProgress)+"%";document.querySelector(".tinkle-track").setAttribute("aria-valuenow",Math.floor(lastProgress));}
-function fail(error){parent.postMessage({velocify:"game-error"},location.origin);failed=true;loading.hidden=false;status.textContent=error instanceof Error?error.message:String(error);retry.hidden=false;document.querySelector(".tinkle-diamond").style.animationPlayState="paused";}
+function fail(error){parent.postMessage({asteria:"game-error"},location.origin);failed=true;loading.hidden=false;status.textContent=error instanceof Error?error.message:String(error);retry.hidden=false;document.querySelector(".tinkle-diamond").style.animationPlayState="paused";}
 retry.addEventListener("click",()=>location.reload());
 async function joinParts(name,count,type){
   const paths=Array.from({length:count},(_,index)=>new URL(BUILD+name+".part"+String(index+1).padStart(3,"0"),document.baseURI).href);
@@ -111,7 +111,7 @@ async function start(){
     matchWebGLToCanvasSize:true,devicePixelRatio:window.gamePerformance.ratio(),
     showBanner(message,type){if(type==="error")fail(message);else console.warn(message);}
   },value=>{if(!failed)setProgress(.75+value*.25);});
-  parent.postMessage({velocify:"game-ready"},location.origin);
+  parent.postMessage({asteria:"game-ready"},location.origin);
   window.gameAssets.release();objectUrls.forEach(url=>URL.revokeObjectURL(url));
   if(!failed){setProgress(1);status.textContent="Ready!";loading.classList.add("fading");setTimeout(()=>{loading.hidden=true;document.getElementById("play-screen").hidden=false;document.getElementById("play").focus();},750);}
 }

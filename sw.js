@@ -23,7 +23,7 @@ async function withTimeout(p, ms) {
 }
 function openScramjetDB() {
 	return new Promise((resolve, reject) => {
-		const req = indexedDB.open("$scramjet-velocify-static-v2", 1);
+		const req = indexedDB.open("$scramjet-asteria-static-v2", 1);
 		req.onupgradeneeded = () => {
 			const db = req.result;
 			for (const s of SCRAMJET_STORES) if (!db.objectStoreNames.contains(s)) db.createObjectStore(s);
@@ -35,7 +35,7 @@ function openScramjetDB() {
 }
 function deleteScramjetDB() {
 	return new Promise((resolve) => {
-		const req = indexedDB.deleteDatabase("$scramjet-velocify-static-v2");
+		const req = indexedDB.deleteDatabase("$scramjet-asteria-static-v2");
 		req.onsuccess = req.onerror = req.onblocked = () => resolve();
 	});
 }

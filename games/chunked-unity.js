@@ -7,9 +7,9 @@
   abort.abort(); overlay.hidden = false;
   status.textContent = error.message || String(error);
   document.getElementById('port-retry').hidden = false;
-  parent.postMessage({ velocify: 'game-error' }, location.origin);
+  parent.postMessage({ asteria: 'game-error' }, location.origin);
  }
- function ready() { overlay.hidden = true; window.gameAssets.release(); parent.postMessage({ velocify: 'game-ready' }, location.origin); }
+ function ready() { overlay.hidden = true; window.gameAssets.release(); parent.postMessage({ asteria: 'game-ready' }, location.origin); }
  window.addEventListener('pagehide', () => { abort.abort(); for (const url of urls) URL.revokeObjectURL(url); });
  try {
   const response = await fetch('manifest.json');

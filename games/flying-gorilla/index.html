@@ -108,7 +108,7 @@
         }).then((unityInstance) => {
           window.gameAssets.release();
             loadingBar.style.display = "none";
-          loadingText.remove();parent.postMessage({velocify:"game-ready"},location.origin);
+          loadingText.remove();parent.postMessage({asteria:"game-ready"},location.origin);
         }).catch((message) => {
           alert(message);
         });

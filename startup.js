@@ -16,7 +16,7 @@ window.startupReady = (async () => {
 		["checking page runtime", () => expect(typeof $scramjetLoadController().ScramjetController === "function")],
 		["checking session runtime", () => expect(typeof BareMux.BareClient === "function")],
 		["validating server addresses", () => expect(servers.every((server) => new URL(server).protocol === "wss:"))],
-		["checking browser storage", () => sessionStorage.getItem("velocify-theme")],
+		["checking browser storage", () => sessionStorage.getItem("asteria-theme")],
 		["checking database support", () => expect(typeof indexedDB.open === "function")],
 		["checking search controls", () => expect(document.getElementById("sj-form") && typeof search === "function")],
 		["checking game catalogue", () => expect(document.getElementById("games-page"))],

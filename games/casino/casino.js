@@ -13,7 +13,7 @@
  function theme() { try { const root=parent.document.documentElement; document.documentElement.dataset.theme=root.dataset.theme||''; for(const key of ['--bg','--surface','--border','--text','--muted','--accent']) document.documentElement.style.setProperty(key,getComputedStyle(root).getPropertyValue(key)); } catch {} }
  theme();
  $('title').textContent=game;
- $('name').value=read('velocify-table-name');
+ $('name').value=read('asteria-table-name');
  $('code').value=params.get('room')||'';
  for(let n=0;n<=36;n++) { const o=document.createElement('option'); o.value=String(n); o.textContent=String(n); $('choice').append(o); }
  function busy(value) { pending=value; for(const b of document.querySelectorAll('button')) b.disabled=value; if(state) render(); }
@@ -23,17 +23,17 @@
   if(!response.ok) throw Error(body.error||'connection failed');
   return body;
  }
- function apply(next) { if(state && next.serverTime < state.serverTime) return; state=next; token=next.token; clockOffset=next.serverTime-Date.now(); write('velocify-room-'+code,token); render(); }
+ function apply(next) { if(state && next.serverTime < state.serverTime) return; state=next; token=next.token; clockOffset=next.serverTime-Date.now(); write('asteria-room-'+code,token); render(); }
  async function enter(create) {
   if(pending) return;
   const name=$('name').value.trim();
   if(!name) { $('error').textContent='enter your name'; $('name').focus(); return; }
   code=create?Array.from(crypto.getRandomValues(new Uint8Array(6)),n=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[n%32]).join(''):$('code').value.trim().toUpperCase();
   if(!/^[A-Z2-9]{6}$/.test(code)) { $('error').textContent='enter a 6-character room code'; return; }
-  token=read('velocify-room-'+code); busy(true); $('error').textContent='connectingâ€¦';
+  token=read('asteria-room-'+code); busy(true); $('error').textContent='connectingâ€¦';
   try {
    const next=await request({action:create?'create':'join',game,name});
-   game=next.game; $('title').textContent=game; write('velocify-table-name',name);
+   game=next.game; $('title').textContent=game; write('asteria-table-name',name);
    apply(next); $('lobby').hidden=true; $('room').hidden=false; $('error').textContent='';
    clearTimeout(timer); poll();
   } catch(e) { $('error').textContent=e.message; } finally { busy(false); }
@@ -176,5 +176,5 @@
   const url=new URL(parent.location.href); url.searchParams.delete('u'); url.searchParams.set('table',game); url.searchParams.set('room',code);
   try { await navigator.clipboard.writeText(url.href); $('copy').textContent='copied'; setTimeout(()=>$('copy').textContent='copy invite',1500); } catch { $('error').textContent='share room code '+code; }
  };
- parent.postMessage({velocify:'game-ready'},location.origin);
+ parent.postMessage({asteria:'game-ready'},location.origin);
 })();

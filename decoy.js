@@ -5,7 +5,7 @@
 	const app = document.getElementById("app");
 	if (!decoy || !page || !app) return;
 
-	const KEY = "velocify";
+	const KEY = "asteria";
 	let triggered = false;
 
 	function ls(k, d) {
@@ -31,7 +31,7 @@
 
 	// panic: jump back to the decoy (or the real Docs site) with a quick fade
 	function panic() {
-		const type = ls("velocify-panic-type", "decoy");
+		const type = ls("asteria-panic-type", "decoy");
 		if (type === "website") {
 			location.href = "https://docs.google.com/document/u/0/";
 			return;
@@ -51,7 +51,7 @@
 		"keydown",
 		(e) => {
 			if (window.__bindingPanic) return;
-			if (e.key !== ls("velocify-panic-key", "`")) return;
+			if (e.key !== ls("asteria-panic-key", "`")) return;
 			e.preventDefault();
 			panic();
 		},
@@ -78,7 +78,7 @@
 		const spin = page.querySelector(".spinner-sm");
 		if (spin) spin.remove();
 
-		// wrap the "velocify" the user actually typed, letter by letter
+		// wrap the "asteria" the user actually typed, letter by letter
 		const esc = (s) =>
 			s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 		const text = page.innerText;

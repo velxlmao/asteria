@@ -16,15 +16,15 @@
 
 	let current = "";
 	try {
-		current = localStorage.getItem("velocify-theme") || "";
+		current = localStorage.getItem("asteria-theme") || "";
 	} catch (e) {}
 
 	function apply(id) {
 		if (id) document.documentElement.dataset.theme = id;
 		else delete document.documentElement.dataset.theme;
 		try {
-			if (id) localStorage.setItem("velocify-theme", id);
-			else localStorage.removeItem("velocify-theme");
+			if (id) localStorage.setItem("asteria-theme", id);
+			else localStorage.removeItem("asteria-theme");
 		} catch (e) {}
 		current = id;
 		for (const el of swatchWrap.children)
@@ -135,7 +135,7 @@
 		if (k === " ") return "Space";
 		return k.length === 1 ? k : k;
 	}
-	bindPanic.textContent = keyLabel(store.get("velocify-panic-key", "`"));
+	bindPanic.textContent = keyLabel(store.get("asteria-panic-key", "`"));
 	bindPanic.addEventListener("click", () => {
 		bindPanic.classList.add("binding");
 		bindPanic.textContent = "press a key";
@@ -146,9 +146,9 @@
 			if (e.key === "Escape") {
 				// cancel
 			} else {
-				store.set("velocify-panic-key", e.key);
+				store.set("asteria-panic-key", e.key);
 			}
-			bindPanic.textContent = keyLabel(store.get("velocify-panic-key", "`"));
+			bindPanic.textContent = keyLabel(store.get("asteria-panic-key", "`"));
 			bindPanic.classList.remove("binding");
 			window.__bindingPanic = false;
 			window.removeEventListener("keydown", onKey, true);
@@ -157,9 +157,9 @@
 	});
 
 	// panic type
-	panicType.value = store.get("velocify-panic-type", "decoy");
+	panicType.value = store.get("asteria-panic-type", "decoy");
 	panicType.addEventListener("change", () => {
-		store.set("velocify-panic-type", panicType.value);
+		store.set("asteria-panic-type", panicType.value);
 	});
 
 	// confirm-before-closing (on by default)
@@ -169,11 +169,11 @@
 		// reliably; an empty string is spec-allowed to be ignored.
 		const beforeUnload = (e) => {
 			e.preventDefault();
-			e.returnValue = "Leave velocify?";
-			return "Leave velocify?";
+			e.returnValue = "Leave asteria?";
+			return "Leave asteria?";
 		};
 		const applyAnticlose = () => {
-			const on = store.get("velocify-anticlose", "1") !== "0";
+			const on = store.get("asteria-anticlose", "1") !== "0";
 			toggleAnticlose.setAttribute("aria-checked", on ? "true" : "false");
 			window.removeEventListener("beforeunload", beforeUnload);
 			if (on) window.addEventListener("beforeunload", beforeUnload);
@@ -181,12 +181,12 @@
 		applyAnticlose();
 		toggleAnticlose.addEventListener("click", () => {
 			const on = toggleAnticlose.getAttribute("aria-checked") === "true";
-			store.set("velocify-anticlose", on ? "0" : "1");
+			store.set("asteria-anticlose", on ? "0" : "1");
 			applyAnticlose();
 		});
 	}
 
-	store.set("velocify-cloak", "0");
+	store.set("asteria-cloak", "0");
 	const toggleCloak = document.getElementById("toggle-cloak");
 	if (toggleCloak) {
 		toggleCloak.setAttribute("aria-checked", "false");

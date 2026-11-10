@@ -1,6 +1,6 @@
 {
-	"name": "velocify",
-	"short_name": "velocify",
+	"name": "asteria",
+	"short_name": "asteria",
 	"start_url": "/?app=1",
 	"scope": "/",
 	"display": "standalone",

@@ -150,7 +150,7 @@
         }).catch(err => {
           const overlay = document.getElementById('errOverlay');
           if (overlay) { overlay.textContent = err.message || String(err); overlay.classList.add('on'); }
-          parent.postMessage({velocify:'game-error'},location.origin);
+          parent.postMessage({asteria:'game-error'},location.origin);
           if (typeof this.onerror === 'function') this.onerror(err);
         });
         return;
@@ -399,7 +399,7 @@ function resetProgress() {
 }
 
 window.gdFirstFrame = function () {
- parent.postMessage({velocify:'game-ready'},location.origin);
+ parent.postMessage({asteria:'game-ready'},location.origin);
   forceAssetsDone();
   setProgress(100);
 };
@@ -522,7 +522,7 @@ var Module = {
       say('[wasm] split load failed: ' + err);
       const overlay = document.getElementById('errOverlay');
       if (overlay) { overlay.textContent = err.message || String(err); overlay.classList.add('on'); }
-      parent.postMessage({velocify:'game-error'},location.origin);
+      parent.postMessage({asteria:'game-error'},location.origin);
     });
     return {};
   },

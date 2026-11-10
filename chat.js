@@ -4,12 +4,12 @@
  const list = $('chat-messages'), input = $('chat-input'), name = $('chat-name');
  let suspended = false, started = false, registered = false, banned = false;
  let browserToken;
- try { browserToken = localStorage.getItem('velocify-browser-token'); } catch {}
- if (!browserToken || !/^[a-zA-Z0-9-]{64,128}$/.test(browserToken)) { browserToken = crypto.randomUUID() + crypto.randomUUID(); try { localStorage.setItem('velocify-browser-token', browserToken); } catch {} }
+ try { browserToken = localStorage.getItem('asteria-browser-token'); } catch {}
+ if (!browserToken || !/^[a-zA-Z0-9-]{64,128}$/.test(browserToken)) { browserToken = crypto.randomUUID() + crypto.randomUUID(); try { localStorage.setItem('asteria-browser-token', browserToken); } catch {} }
  let socket, reconnect, retry = 0, ownId = '', visible = false, ready = false, pending = '', sentAt = 0;
  let owner = false, ttlSeconds = 0, clockOffset = 0, moderating = false, moderationTimer;
  const messages = new Map();
- try { name.value = localStorage.getItem('velocify-chat-name') || ''; } catch {}
+ try { name.value = localStorage.getItem('asteria-chat-name') || ''; } catch {}
  function send(data) { socket.send(JSON.stringify({ ...data, token: browserToken })); }
  function passwordPrompt() {
   const owner = name.value.trim().toLowerCase() === 'velx';
@@ -85,7 +85,7 @@
   socket = new WebSocket('wss://velocify-public-chat.realdashvr.workers.dev/connect');
   const connection = socket;
   controls();
-  socket.onopen = () => { retry = 0; registered = false; try { const saved = localStorage.getItem('velocify-browser-token'); if (saved && /^[a-zA-Z0-9-]{64,128}$/.test(saved)) browserToken = saved; } catch {} send({ type: 'hello' }); controls(); };
+  socket.onopen = () => { retry = 0; registered = false; try { const saved = localStorage.getItem('asteria-browser-token'); if (saved && /^[a-zA-Z0-9-]{64,128}$/.test(saved)) browserToken = saved; } catch {} send({ type: 'hello' }); controls(); };
   socket.onmessage = event => {
    try {
     const data = JSON.parse(event.data);
@@ -132,7 +132,7 @@
  function setName() {
   const value = name.value.trim();
   if (!value || value.length > 24) { error('Choose a name between 1 and 24 characters.'); return; }
-  try { localStorage.setItem('velocify-chat-name', value); } catch {}
+  try { localStorage.setItem('asteria-chat-name', value); } catch {}
   if (registered && !banned && socket?.readyState === WebSocket.OPEN) { ready = false; owner = false; render(); send({ type: 'name', name: value, password: value.toLowerCase() === 'velx' ? $('chat-password').value : undefined }); controls(); }
   else connect();
  }

@@ -28,13 +28,13 @@
   UnityLoader.instantiate('gameContainer',manifest,{Module:{devicePixelRatio:window.gamePerformance.ratio()},onProgress(_,progress) {
    if (progress < 1) return;
    loading.remove(); URL.revokeObjectURL(manifest); window.gameAssets.release();
-   parent.postMessage({velocify:'game-ready'},location.origin);
+   parent.postMessage({asteria:'game-ready'},location.origin);
   }});
  } catch (error) {
   loading.textContent = error.message || String(error);
   const retry = document.createElement('button'); retry.textContent = error.allowHeavy ? 'try anyway' : 'retry';
   retry.onclick = () => { if (!error.allowHeavy) return location.reload(); const url = new URL(location.href); url.searchParams.set('allowHeavy','1'); location.href = url.href; };
   loading.append(document.createElement('br'),retry);
-  parent.postMessage({velocify:'game-error'},location.origin);
+  parent.postMessage({asteria:'game-error'},location.origin);
  }
 })();

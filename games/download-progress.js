@@ -14,7 +14,7 @@
 				total += Math.max(file.total, file.loaded);
 			}
 			total = Math.max(total, Object.values(window.gameDownloadSizes || {}).reduce((sum, size) => sum + size, 0));
-			parent.postMessage({ velocify: "game-download", loaded, total }, location.origin);
+			parent.postMessage({ asteria: "game-download", loaded, total }, location.origin);
 		}, 100);
 	};
 	const record = (url) => {

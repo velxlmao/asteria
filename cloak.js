@@ -1,2 +1,2 @@
 "use strict";
-try { localStorage.setItem("velocify-cloak", "0"); } catch {}
+try { localStorage.setItem("asteria-cloak", "0"); } catch {}

@@ -139,7 +139,7 @@
                         }
                     },
                 }).then(() => {
-                    window.gameAssets.release();setStatusMode('hidden');parent.postMessage({velocify:'game-ready'},location.origin);
+                    window.gameAssets.release();setStatusMode('hidden');parent.postMessage({asteria:'game-ready'},location.origin);
                 }, displayFailureNotice);
             }
         };

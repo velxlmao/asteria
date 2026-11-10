@@ -17,7 +17,7 @@
     const signature = parts.map(part => part.url + ':' + part.size).join('\n');
     const digest = await crypto.subtle.digest('SHA-256',new TextEncoder().encode(signature));
     name = Array.from(new Uint8Array(digest),byte => byte.toString(16).padStart(2,'0')).join('') + '.bin';
-    folder = await (await navigator.storage.getDirectory()).getDirectoryHandle('velocify-game-cache',{create:true});
+    folder = await (await navigator.storage.getDirectory()).getDirectoryHandle('asteria-game-cache',{create:true});
     handle = await folder.getFileHandle(name,{create:true});
     const cached = await handle.getFile();
     if (cached.size === total) { for (const part of parts) progress(part,part.size); onProgress?.(total,total); return result(cached,type); }

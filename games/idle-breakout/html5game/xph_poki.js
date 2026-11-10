@@ -1,4 +1,4 @@
-// velocify: guard so bare PokiSDK refs do not ReferenceError (Poki SDK is not loaded)
+// asteria: guard so bare PokiSDK refs do not ReferenceError (Poki SDK is not loaded)
 var PokiSDK = window.PokiSDK || null;
 window.PokiSDK_OK = false;
 window.PokiSDK_loadState = 0;

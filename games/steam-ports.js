@@ -8,7 +8,7 @@
  function ready() {
   overlay.hidden = true;
   window.gameAssets.release();
-  parent.postMessage({ velocify: 'game-ready' }, location.origin);
+  parent.postMessage({ asteria: 'game-ready' }, location.origin);
  }
  function persist(module) {
   if (module?.FS?.syncfs) window.persistGameSaves(() => new Promise((resolve, reject) => module.FS.syncfs(false, error => error ? reject(error) : resolve())));
@@ -110,6 +110,6 @@
   overlay.hidden = false;
   status.textContent = error.message || String(error);
   retry.hidden = false;
-  parent.postMessage({ velocify: 'game-error' }, location.origin);
+  parent.postMessage({ asteria: 'game-error' }, location.origin);
  }
 })();

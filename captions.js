@@ -1,10 +1,10 @@
 "use strict";
 (() => {
  const lines = [
-  "velocify on top",
+  "asteria on top",
   "check out public chat!",
   "check out xyfer aswell",
-  "velocify tops aether",
+  "asteria tops aether",
   "velx says hi",
   "evil velx 4000",
   "😭😭🥀🥀✌️",

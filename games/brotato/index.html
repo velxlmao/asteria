@@ -300,7 +300,7 @@ loadSplitPck(engine, {"size":204866704,"parts":[{"file":"index.pck.part-0000","s
 				}).then(() => {
 					setStatusMode('hidden');
 					initializing = false;
-					parent.postMessage({ velocify: 'game-ready' }, location.origin);
+					parent.postMessage({ asteria: 'game-ready' }, location.origin);
 				}, displayFailureNotice);
 			}
 		})();

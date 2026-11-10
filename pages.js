@@ -144,7 +144,7 @@
 	];
 
 	const gl = document.getElementById("game-loader");
-	const MIN_SPLASH = 2000; // velocify splash shows at least this long
+	const MIN_SPLASH = 2000; // asteria splash shows at least this long
 	let glShownAt = 0;
 
 	function showGameLoader() {
@@ -177,13 +177,13 @@
 	window.addEventListener("message", (e) => {
 		const activeFrame = document.getElementById("sj-local");
 		if (e.origin !== location.origin || e.source !== activeFrame?.contentWindow) return;
-		if (e.data?.velocify === "game-download" && Number.isFinite(e.data.loaded) && Number.isFinite(e.data.total)) {
+		if (e.data?.asteria === "game-download" && Number.isFinite(e.data.loaded) && Number.isFinite(e.data.total)) {
 			const total = Math.max(e.data.total, e.data.loaded);
 			const scale = 1024 ** 2;
 			const text = "downloading content " + (e.data.loaded / scale).toFixed(1) + "/" + (total / scale).toFixed(1) + "mb";
 			for (const el of gl.querySelectorAll(".connection-status")) el.textContent = text;
 		}
-		if (e.data && ["game-ready", "game-error"].includes(e.data.velocify) && onGameReady) {
+		if (e.data && ["game-ready", "game-error"].includes(e.data.asteria) && onGameReady) {
 			const cb = onGameReady;
 			onGameReady = null;
 			cb();
