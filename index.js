@@ -96,8 +96,7 @@ form.addEventListener("submit", async (event) => {
 		if (await window.startupReady === false) throw new Error("startup failed, reload to retry");
 		await registerSW();
 		await scramjetReady;
-		const host = new URL(url).hostname;
-		await prepareService(/(^|\.)youtube\.com$|(^|\.)youtu\.be$/.test(host) ? url : undefined);
+		await prepareService(url);
 		controller.signal.throwIfAborted();
 	} catch (err) {
 		if (controller.signal.aborted) return;
