@@ -9,6 +9,25 @@ const home = document.getElementById("home");
 const view = document.getElementById("view");
 const homeBtn = document.getElementById("home-btn");
 const loader = document.getElementById("loader");
+const browserBar = document.getElementById("browser-bar");
+document.getElementById("app").append(browserBar);
+const browserAddress = document.getElementById("browser-address");
+const browserBack = document.getElementById("browser-back");
+const browserForward = document.getElementById("browser-forward");
+document.getElementById("browser-menu").addEventListener("click", () => {
+	homeBtn.click();
+	document.getElementById("nav-home").click();
+	browserAddress.value = "";
+});
+browserBack.addEventListener("click", () => frame?.back());
+browserForward.addEventListener("click", () => frame?.forward());
+document.getElementById("browser-address-form").addEventListener("submit", event => {
+	event.preventDefault();
+	if (!browserAddress.value.trim()) return;
+	window.dispatchEvent(new Event("asteria-browser-navigate"));
+	address.value = browserAddress.value;
+	form.requestSubmit();
+});
 for (const shortcut of document.querySelectorAll("[data-shortcut]")) {
 	const label = shortcut.querySelector("span").textContent;
 	shortcut.setAttribute("aria-label", label);
@@ -82,6 +101,7 @@ form.addEventListener("submit", async (event) => {
 	navigation = controller;
 	connecting = true;
 	const url = search(address.value, searchEngine.value);
+	browserAddress.value = url;
 	home.hidden = true;
 	view.hidden = false;
 	document.body.classList.add("view-mode");
@@ -110,6 +130,8 @@ form.addEventListener("submit", async (event) => {
 		frame.frame.id = "sj-frame";
 		view.appendChild(frame.frame);
 		frame.frame.addEventListener("load", () => {
+			try { if (document.activeElement !== browserAddress) browserAddress.value = String(frame.url); } catch {}
+			browserBack.disabled = browserForward.disabled = false;
 			if (!connecting && !navigation?.signal.aborted) finishNavigation(true);
 		});
 	}
@@ -128,6 +150,7 @@ form.addEventListener("submit", async (event) => {
 });
 
 function cancelNavigation() {
+	browserBack.disabled = browserForward.disabled = true;
 	try { sessionStorage.removeItem(window.__workspaceKey); } catch {}
 	navigation?.abort();
 	connecting = false;

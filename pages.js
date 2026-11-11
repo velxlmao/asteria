@@ -423,6 +423,7 @@
 	});
 	document.getElementById("home-btn").addEventListener("click", () => document.body.classList.remove("playing-game"));
 	navHome.addEventListener("click", () => closeCurrent());
+	window.addEventListener("asteria-browser-navigate", () => closeCurrent());
 
 	for (const name of Object.keys(pages)) {
 		pages[name]
