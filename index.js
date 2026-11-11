@@ -33,6 +33,25 @@ let frame = null;
 let navigation = null;
 let connecting = false;
 const probeClient = new BareMux.BareClient(window.__VELO_BASE + "lib/m/worker.js");
+let serviceReady = false;
+let serviceSetup;
+function prepareService() {
+	if (serviceReady) return Promise.resolve();
+	if (serviceSetup) return serviceSetup;
+	serviceSetup = (async () => {
+		await registerSW();
+		await scramjetReady;
+		await window.connectService(window.__VELO_SERVICES, async (serviceUrl, signal) => {
+			await connection.setTransport(window.__VELO_BASE + "lib/e/index.mjs?v=64c6bc76c5b3", [{ wisp: serviceUrl }]);
+			const response = await probeClient.fetch("https://example.com/", { signal });
+			await response.body?.cancel();
+			if (response.status >= 500) throw new Error("connection unavailable");
+		}, (index, total) => connectionStatus("connecting to service " + index + "/" + total), new AbortController().signal, 5000);
+		serviceReady = true;
+	})().finally(() => { serviceSetup = null; });
+	return serviceSetup;
+}
+prepareService().catch(() => {});
 
 function connectionStatus(text) {
 	for (const el of document.querySelectorAll(".connection-status")) el.textContent = text;
@@ -63,17 +82,7 @@ form.addEventListener("submit", async (event) => {
 		if (await window.startupReady === false) throw new Error("startup failed, reload to retry");
 		await registerSW();
 		await scramjetReady;
-		const servers = [...window.__VELO_SERVICES];
-
-		await window.connectService(servers, async (serviceUrl, signal) => {
-			signal.throwIfAborted();
-			await connection.setTransport(window.__VELO_BASE + "lib/e/index.mjs?v=64c6bc76c5b3", [{ wisp: serviceUrl }]);
-			signal.throwIfAborted();
-			const response = await probeClient.fetch(url, { method: "GET", redirect: "follow", signal });
-			await response.body?.cancel();
-			signal.throwIfAborted();
-			if (response.status >= 500 || [403, 407, 429].includes(response.status)) throw new Error("upstream unavailable");
-		}, (index, total) => connectionStatus("connecting to service " + index + "/" + total), controller.signal);
+		await prepareService();
 		controller.signal.throwIfAborted();
 	} catch (err) {
 		if (controller.signal.aborted) return;

@@ -4,11 +4,13 @@
 		games: document.getElementById("games-page"),
 		apps: document.getElementById("apps-page"),
 		chat: document.getElementById("chat-page"),
+		ai: document.getElementById("ai-page"),
 	};
 	const navs = {
 		games: document.getElementById("nav-games"),
 		apps: document.getElementById("nav-apps"),
 		chat: document.getElementById("nav-chat"),
+		ai: document.getElementById("nav-ai"),
 	};
 	const home = document.getElementById("home");
 	const navHome = document.getElementById("nav-home");
@@ -66,9 +68,9 @@
 
 	// ---- catalogues ----
 	const GAMES = [
-		{ name: "Plague Inc.", url: "https://wasm.rip/files/plauge/index.html?ref=playgamesinbrowser", img: "games/plague-inc.png", splash: "load" },
-		{ name: "Among Us (Legacy)", url: "https://wasm.rip/files/amongus/legacy/", img: "games/among-us.webp", splash: "load" },
-		{ name: "Among Us (2026)", url: "https://wasm.rip/files/amongus/latest/", img: "games/among-us.webp", splash: "load" },
+		{ name: "Plague Inc.", url: "games/wasm-plague/index.html", img: "games/plague-inc.png", local: true, splash: "load" },
+		{ name: "Among Us (Legacy)", url: "games/wasm-among-legacy/index.html", img: "games/among-us.webp", local: true, splash: "load" },
+		{ name: "Among Us (2026)", url: "games/wasm-among-new/index.html", img: "games/among-us.webp", local: true, splash: "load" },
 		{ name: "Untitled Goose Game", url: "games/untitled-goose-game/index.html", img: "games/untitled-goose-game.jpg", local: true, download: true },
 		{ name: "Totally Accurate Battle Simulator", url: "games/tabs/index.html", img: "games/tabs.jpg", local: true, download: true },
 		{ name: "Clustertruck", url: "games/clustertruck/index.html", img: "games/clustertruck.jpg", local: true, download: true },
@@ -401,6 +403,7 @@
 	navs.games.addEventListener("click", () => openPage("games"));
 	navs.apps.addEventListener("click", () => openPage("apps"));
 	navs.chat.addEventListener("click", () => openPage("chat"));
+	 navs.ai.addEventListener("click", () => openPage("ai"));
 	navHome.addEventListener("click", () => closeCurrent());
 
 	for (const name of Object.keys(pages)) {

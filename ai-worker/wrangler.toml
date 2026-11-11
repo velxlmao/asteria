@@ -1,0 +1,8 @@
+name = "asteria-ai"
+main = "index.js"
+compatibility_date = "2026-11-10"
+
+[[ratelimits]]
+name = "AI_LIMIT"
+namespace_id = "1001"
+simple = { limit = 10, period = 60 }
