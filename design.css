@@ -276,16 +276,20 @@ body.content-page #settings-overlay { top: 16px; }
 ::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
 ::-webkit-scrollbar-corner { background: transparent; }
 #nav-ai svg { width: 23px; height: 23px; }
-.ai-main { position: relative; grid-template-rows: auto minmax(0, 1fr) auto auto; }
+.ai-main { position: relative; grid-template-rows: auto minmax(0, 1fr) auto auto auto; }
 .ai-heading { padding: 0 0 16px; justify-content: flex-start; }
 .ai-wordmark { width: auto; margin-right: auto; text-align: left; font-size: 23px; animation: wordmark-swirl 12s ease-in-out infinite; }
 .ai-main header .ai-share { margin-left: auto; }
 .ai-welcome { align-self: end; text-align: center; padding-bottom: 28px; }
 .ai-welcome h2 { margin: 0; font: 700 clamp(28px, 4vw, 40px)/1.25 Satoshi, sans-serif; letter-spacing: -.035em; color: var(--text); }
-.ai-main:not(.has-messages) { grid-template-rows: auto minmax(0, 1fr) auto auto minmax(0, 1fr); }
+.ai-main:not(.has-messages) { grid-template-rows: auto minmax(0, 1fr) auto auto auto minmax(0, 1fr); }
 .ai-main:not(.has-messages) .ai-messages { display: none; }
-.ai-main:not(.has-messages) .ai-status { grid-row: 4; margin-top: 12px; }
+.ai-main:not(.has-messages) .ai-status { grid-row: 5; margin-top: 12px; }
 .ai-main:not(.has-messages) .ai-compose { grid-row: 3; }
+.ai-screen-tools { display: flex; align-items: center; gap: 8px; width: 100%; max-width: 760px; margin: 0 auto; }
+.ai-screen-tools button { padding: 7px 12px; border-radius: 16px; }
+.ai-screen-tools button:disabled { opacity: .5; }
+.ai-main:not(.has-messages) .ai-screen-tools { grid-row: 4; }
 .ai-compose { max-width: 760px; border-radius: 24px; padding: 10px; align-items: flex-end; }
 .ai-compose textarea { height: 74px; }
 .ai-compose button { align-self: flex-end; margin-bottom: 4px; border-radius: 18px; }
@@ -299,7 +303,7 @@ body.content-page #settings-overlay { top: 16px; }
 .ai-chats { margin-top: 24px; }
 .ai-chat-row button { border-color: transparent; background: transparent; }
 .ai-chat-row button:first-child { padding: 11px 10px; }
-.ai-sharing .ai-main, .ai-pip .ai-main { grid-template-rows: auto minmax(0, 1fr) auto auto; }
+.ai-sharing .ai-main, .ai-pip .ai-main { grid-template-rows: auto minmax(0, 1fr) auto auto auto; }
 .ai-sharing .ai-welcome, .ai-pip .ai-welcome { align-self: center; padding: 18px 0; }
 .ai-sharing .ai-welcome h2, .ai-pip .ai-welcome h2 { font-size: 24px; }
 .ai-sharing .ai-wordmark, .ai-pip .ai-wordmark { font-size: 20px; }

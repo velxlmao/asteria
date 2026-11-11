@@ -37,7 +37,9 @@
 	const floating = element("button", "ai-float", "float over tabs");
 	floating.type = "button";
 	floating.hidden = true;
-	heading.append(wordmark, share, floating);
+	heading.append(wordmark);
+	const screenTools = element("div", "ai-screen-tools");
+	screenTools.append(share, floating);
 	let screenStream;
 	let screenVideo;
 	let floatingWindow;
@@ -59,25 +61,34 @@
 		if (!navigator.mediaDevices?.getDisplayMedia) { status.textContent = "screenshare is unavailable in this browser"; return; }
 		try {
 			choosingScreen = true;
-			const capture = navigator.mediaDevices.getDisplayMedia({ video: { displaySurface: "browser" }, audio: false, preferCurrentTab: false, selfBrowserSurface: "exclude", surfaceSwitching: "include" });
-			const autoFloat = window.documentPictureInPicture ? openFloating() : Promise.resolve();
-			screenStream = await capture;
-			await autoFloat;
+			share.disabled = true;
+			share.textContent = "choose a tab…";
+			const controller = window.CaptureController ? new window.CaptureController() : undefined;
+			controller?.setFocusBehavior?.("focus-captured-surface");
+			screenStream = await navigator.mediaDevices.getDisplayMedia({ controller, video: { displaySurface: "browser" }, audio: false, preferCurrentTab: false, selfBrowserSurface: "exclude", surfaceSwitching: "include" });
+			const track = screenStream.getVideoTracks()[0];
+			if (!track || track.readyState !== "live") throw new Error("capture ended");
+			track.addEventListener("ended", stopSharing, { once: true });
 			screenVideo = document.createElement("video");
 			screenVideo.muted = true;
+			screenVideo.playsInline = true;
 			screenVideo.srcObject = screenStream;
 			await screenVideo.play();
-			screenStream.getVideoTracks()[0].addEventListener("ended", stopSharing, { once: true });
+			if (track.readyState !== "live") throw new Error("capture ended");
 			share.textContent = "stop sharing";
 			page.classList.add("ai-sharing");
 			floating.hidden = Boolean(floatingWindow) || !window.documentPictureInPicture;
 			status.textContent = "each question sends a screenshot to the ai provider";
+			if (window.documentPictureInPicture) await openFloating();
 		} catch (error) { stopSharing(); status.textContent = error.name === "NotAllowedError" ? "screen sharing cancelled or denied" : "could not start screenshare"; }
-		finally { choosingScreen = false; }
+		finally { choosingScreen = false; share.disabled = false; }
 	});
 	async function openFloating() {
+		if (!screenStream) return;
+		if (floatingWindow && !floatingWindow.closed) { floatingWindow.focus(); return; }
 		try {
 			floatingWindow = await window.documentPictureInPicture.requestWindow({ width: 400, height: 520 });
+			if (!screenStream) { floatingWindow.close(); floatingWindow = null; return; }
 			const doc = floatingWindow.document;
 			for (const sheet of document.querySelectorAll('link[rel="stylesheet"]')) {
 				const link = doc.createElement("link");
@@ -90,12 +101,12 @@
 			doc.body.append(main);
 			floating.hidden = true;
 			floatingWindow.addEventListener("pagehide", () => { page.append(main); floatingWindow = null; floating.hidden = !screenStream; });
-		} catch { status.textContent = "could not open floating window"; }
+		} catch { floating.hidden = false; status.textContent = "sharing started. click float over tabs to open the ai window"; }
 	}
 	floating.addEventListener("click", openFloating);
 	function screenshot() {
 		if (!screenStream) return undefined;
-		if (screenStream.getVideoTracks()[0].readyState !== "live" || !screenVideo.videoWidth) throw new Error("screen is unavailable, share the tab again");
+		if (screenStream.getVideoTracks()[0]?.readyState !== "live" || !screenVideo?.videoWidth) throw new Error("screen is unavailable, share the tab again");
 		const canvas = document.createElement("canvas");
 		const scale = Math.min(1, 1440 / screenVideo.videoWidth);
 		canvas.width = Math.round(screenVideo.videoWidth * scale);
@@ -118,7 +129,7 @@
 	const status = element("p", "ai-status");
 	status.setAttribute("role", "status");
 	form.append(input, send);
-	main.append(heading, welcome, messages, status, form);
+	main.append(heading, welcome, messages, status, form, screenTools);
 	page.append(aside, main);
 	document.body.append(page);
 	let chats;
