@@ -44,19 +44,24 @@ let connecting = false;
 const probeClient = new BareMux.BareClient(window.__VELO_BASE + "lib/m/worker.js");
 let serviceReady = false;
 let serviceSetup;
-function prepareService() {
-	if (serviceReady) return Promise.resolve();
-	if (serviceSetup) return serviceSetup;
+const checkedHosts = new Set();
+let selectedService;
+function prepareService(target) {
+	const host = target && new URL(target).hostname;
+	if (serviceReady && (!target || checkedHosts.has(host))) return Promise.resolve();
+	if (serviceSetup) return serviceSetup.then(() => prepareService(target));
 	serviceSetup = (async () => {
 		await registerSW();
 		await scramjetReady;
-		await window.connectService(window.__VELO_SERVICES, async (serviceUrl, signal) => {
+		const servers = selectedService ? [selectedService, ...window.__VELO_SERVICES.filter(server => server !== selectedService)] : window.__VELO_SERVICES;
+		selectedService = await window.connectService(servers, async (serviceUrl, signal) => {
 			await connection.setTransport(window.__VELO_BASE + "lib/e/index.mjs?v=64c6bc76c5b3", [{ wisp: serviceUrl }]);
-			const response = await probeClient.fetch("https://example.com/", { signal });
+			const response = await probeClient.fetch(target || "https://example.com/", { signal, redirect: "follow" });
 			await response.body?.cancel();
-			if (response.status >= 500) throw new Error("connection unavailable");
-		}, (index, total) => connectionStatus("connecting to service " + index + "/" + total), new AbortController().signal, 5000);
+			if (response.status >= 500 || [403, 407, 429].includes(response.status)) throw new Error("connection unavailable");
+		}, (index, total) => connectionStatus("connecting to service " + index + "/" + total), new AbortController().signal, target ? 10000 : 5000);
 		serviceReady = true;
+		if (host) checkedHosts.add(host);
 	})().finally(() => { serviceSetup = null; });
 	return serviceSetup;
 }
@@ -91,7 +96,8 @@ form.addEventListener("submit", async (event) => {
 		if (await window.startupReady === false) throw new Error("startup failed, reload to retry");
 		await registerSW();
 		await scramjetReady;
-		await prepareService();
+		const host = new URL(url).hostname;
+		await prepareService(/(^|\.)youtube\.com$|(^|\.)youtu\.be$/.test(host) ? url : undefined);
 		controller.signal.throwIfAborted();
 	} catch (err) {
 		if (controller.signal.aborted) return;
