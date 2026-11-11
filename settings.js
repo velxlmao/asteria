@@ -1,11 +1,11 @@
 "use strict";
 (() => {
 	const themes = [
-		{ id: "", bg: "#0f1216", accent: "#6f96c9" },
-		{ id: "slate", bg: "#14171c", accent: "#8aa0c4" },
+		{ id: "", bg: "#100b18", accent: "#a855f7" },
+		{ id: "slate", bg: "#130d20", accent: "#8b5cf6" },
 		{ id: "forest", bg: "#0e1512", accent: "#5fab84" },
 		{ id: "plum", bg: "#14101a", accent: "#a07fc9" },
-		{ id: "light", bg: "#eef1f5", accent: "#3a6ea5" },
+		{ id: "light", bg: "#eef1f5", accent: "#8b3fd1" },
 	];
 
 	const overlay = document.getElementById("settings-overlay");
