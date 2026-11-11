@@ -226,6 +226,8 @@ body.playing-game #game-fullscreen { display: grid; place-items: center; }
 .fullpage { backdrop-filter: none; -webkit-backdrop-filter: none; background: color-mix(in srgb, var(--bg) 86%, transparent); }
 #sidebar { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 #dot-matrix { overflow: hidden; contain: strict; }
+#reactive-paint { contain: strict; clip-path: inset(0); }
+#sidebar, #settings-panel, .fullpage, #game-fullscreen { backdrop-filter: none; -webkit-backdrop-filter: none; }
 @media (hover: hover) and (pointer: fine) { input, textarea, [contenteditable="true"] { cursor: text !important; } }
 @media(max-width:600px) { .ai-page.open { grid-template-columns: 130px 1fr; } .ai-sidebar, .ai-main { padding: 10px; } }
 @media (hover: hover) and (pointer: fine) {

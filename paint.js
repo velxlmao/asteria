@@ -11,7 +11,7 @@
 	let lastFrame = 0;
 	const sources = [[.22, .3], [.76, .68]];
 	function resize() {
-		width = 48;
+		width = 40;
 		height = Math.max(24, Math.min(72, Math.round(width * innerHeight / innerWidth)));
 		canvas.width = width;
 		canvas.height = height;
@@ -27,8 +27,8 @@
 		render();
 	}
 	function sample(field, x, y) {
-		x = Math.max(0, Math.min(width - 1.001, x));
-		y = Math.max(0, Math.min(height - 1.001, y));
+		x = Math.max(1, Math.min(width - 2.001, x));
+		y = Math.max(1, Math.min(height - 2.001, y));
 		const left = Math.floor(x), top = Math.floor(y), fx = x - left, fy = y - top;
 		const index = top * width + left;
 		return (field[index] * (1 - fx) + field[index + 1] * fx) * (1 - fy) + (field[index + width] * (1 - fx) + field[index + width + 1] * fx) * fy;
@@ -48,7 +48,7 @@
 			const i = y * width + x;
 			divergence[i] = -.5 * (velocityX[i + 1] - velocityX[i - 1] + velocityY[i + width] - velocityY[i - width]);
 		}
-		for (let pass = 0; pass < 4; pass++) {
+		for (let pass = 0; pass < 3; pass++) {
 			for (let y = 1; y < height - 1; y++) for (let x = 1; x < width - 1; x++) {
 				const i = y * width + x;
 				nextPressure[i] = (divergence[i] + pressure[i - 1] + pressure[i + 1] + pressure[i - width] + pressure[i + width]) * .25;
@@ -83,7 +83,7 @@
 		context.putImageData(pixels, 0, 0);
 	}
 	function frame(time) {
-		setTimeout(() => requestAnimationFrame(frame), 80);
+		setTimeout(frame, 120, performance.now());
 		if (document.hidden || document.getElementById("calculator-cover") || document.body.classList.contains("view-mode") || reducedMotion.matches) return;
 		lastFrame = time;
 		simulate(time);
@@ -92,6 +92,7 @@
 	window.addEventListener("pointermove", event => {
 		if (reducedMotion.matches || document.body.classList.contains("view-mode")) return;
 		const x = event.clientX / innerWidth * width, y = event.clientY / innerHeight * height;
+		if (pointer && performance.now() - pointer.time < 80) return;
 		if (pointer) {
 			const dx = Math.max(-3, Math.min(3, x - pointer.x)), dy = Math.max(-3, Math.min(3, y - pointer.y));
 			for (let row = Math.max(1, Math.floor(y - 9)); row < Math.min(height - 1, y + 9); row++) {
@@ -103,7 +104,7 @@
 				}
 			}
 		}
-		pointer = { x, y };
+		pointer = { x, y, time: performance.now() };
 	}, { passive: true });
 	document.documentElement.addEventListener("pointerleave", () => { pointer = undefined; });
 	window.addEventListener("resize", resize);

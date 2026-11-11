@@ -1,47 +1,42 @@
 (() => {
-	const matrix = document.createElement("div");
-	matrix.id = "dot-matrix";
-	matrix.setAttribute("aria-hidden", "true");
-	document.body.prepend(matrix);
-	const dots = [];
+	const canvas = document.createElement("canvas");
+	canvas.id = "dot-matrix";
+	canvas.setAttribute("aria-hidden", "true");
+	document.body.prepend(canvas);
+	const context = canvas.getContext("2d");
+	if (!context) return;
 	const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-	function resize() {
-		matrix.replaceChildren();
-		dots.length = 0;
-		for (let y = 16; y < innerHeight; y += 32) {
-			for (let x = 16; x < innerWidth; x += 32) {
-				const dot = document.createElement("i");
-				dot.style.left = x + "px";
-				dot.style.top = y + "px";
-				matrix.append(dot);
-				dots.push({ dot, x, y, moved: false });
+	let pointer;
+	let pending = false;
+	function draw() {
+		pending = false;
+		context.clearRect(0, 0, canvas.width, canvas.height);
+		context.fillStyle = getComputedStyle(canvas).getPropertyValue("--accent").trim();
+		context.globalAlpha = .2;
+		for (let y = 16; y < canvas.height; y += 36) for (let x = 16; x < canvas.width; x += 36) {
+			let offsetX = 0, offsetY = 0;
+			if (pointer && !reduced.matches) {
+				const dx = x - pointer.x, dy = y - pointer.y;
+				const distance = Math.hypot(dx, dy);
+				const force = Math.max(0, 1 - distance / 140) ** 2 * 18;
+				offsetX = dx / (distance || 1) * force;
+				offsetY = dy / (distance || 1) * force;
 			}
+			context.fillRect(Math.max(1, Math.min(canvas.width - 2, x + offsetX)), Math.max(1, Math.min(canvas.height - 2, y + offsetY)), 2, 2);
 		}
 	}
-	resize();
-	window.addEventListener("resize", resize);
-	let frame;
-	window.addEventListener("pointermove", (event) => {
-		cancelAnimationFrame(frame);
-		frame = requestAnimationFrame(() => {
-			if (reduced.matches || document.hidden || document.body.classList.contains("view-mode") || document.getElementById("calculator-cover")) return;
-			for (const point of dots) {
-				const { dot, x, y } = point;
-				const dx = x - event.clientX;
-				const dy = y - event.clientY;
-				if (Math.abs(dx) > 150 || Math.abs(dy) > 150) {
-					if (point.moved) { dot.style.translate = "0 0"; point.moved = false; }
-					continue;
-				}
-				const distance = Math.hypot(dx, dy);
-				const force = Math.max(0, 1 - distance / 150) ** 2 * 24;
-				dot.style.translate = `${dx / (distance || 1) * force}px ${dy / (distance || 1) * force}px`;
-				point.moved = true;
-			}
-		});
+	function schedule() {
+		if (pending) return;
+		pending = true;
+		setTimeout(draw, 65);
+	}
+	window.addEventListener("pointermove", event => {
+		if (document.hidden || document.body.classList.contains("view-mode") || document.getElementById("calculator-cover")) return;
+		pointer = { x: event.clientX, y: event.clientY };
+		schedule();
 	}, { passive: true });
-	document.documentElement.addEventListener("pointerleave", () => {
-		cancelAnimationFrame(frame);
-		for (const { dot } of dots) dot.style.translate = "0 0";
-	});
+	document.documentElement.addEventListener("pointerleave", () => { pointer = undefined; schedule(); });
+	function resize() { canvas.width = innerWidth; canvas.height = innerHeight; draw(); }
+	window.addEventListener("resize", resize);
+	resize();
 })();
