@@ -1,113 +1,53 @@
 (() => {
-	const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
 	const canvas = document.createElement("canvas");
 	canvas.id = "reactive-paint";
 	canvas.setAttribute("aria-hidden", "true");
 	document.body.prepend(canvas);
-	const context = canvas.getContext("2d", { alpha: true });
+	const context = canvas.getContext("2d");
 	if (!context) return;
-	let width, height, velocityX, velocityY, nextX, nextY, dye, nextDye, pressure, nextPressure, divergence, pixels, pigment;
+	const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+	const clouds = [{ x: .26, y: .35, hue: 270 }, { x: .7, y: .65, hue: 286 }];
 	let pointer;
-	let lastFrame = 0;
-	const sources = [[.22, .3], [.76, .68]];
-	function resize() {
-		width = 40;
-		height = Math.max(24, Math.min(72, Math.round(width * innerHeight / innerWidth)));
-		canvas.width = width;
-		canvas.height = height;
-		const size = width * height;
-		[velocityX, velocityY, nextX, nextY, dye, nextDye, pressure, nextPressure, divergence] = Array.from({ length: 9 }, () => new Float32Array(size));
-		pixels = context.createImageData(width, height);
-		pigment = new Float32Array(size);
-		for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
-			for (const [sx, sy] of sources) pigment[y * width + x] += Math.exp(-((x - sx * width) ** 2 + (y - sy * height) ** 2) / 30);
-			dye[y * width + x] = pigment[y * width + x] * .55;
-		}
-		pointer = undefined;
-		render();
-	}
-	function sample(field, x, y) {
-		x = Math.max(1, Math.min(width - 2.001, x));
-		y = Math.max(1, Math.min(height - 2.001, y));
-		const left = Math.floor(x), top = Math.floor(y), fx = x - left, fy = y - top;
-		const index = top * width + left;
-		return (field[index] * (1 - fx) + field[index + 1] * fx) * (1 - fy) + (field[index + width] * (1 - fx) + field[index + width + 1] * fx) * fy;
-	}
-	function simulate(time) {
-		for (let y = 1; y < height - 1; y++) for (let x = 1; x < width - 1; x++) {
-			const i = y * width + x;
-			velocityX[i] += Math.sin(y * .12 + time * .00015) * .012;
-			velocityY[i] += Math.cos(x * .1 - time * .00012) * .012;
-			nextX[i] = sample(velocityX, x - velocityX[i], y - velocityY[i]) * .986;
-			nextY[i] = sample(velocityY, x - velocityX[i], y - velocityY[i]) * .986;
-		}
-		[velocityX, nextX] = [nextX, velocityX];
-		[velocityY, nextY] = [nextY, velocityY];
-		pressure.fill(0);
-		for (let y = 1; y < height - 1; y++) for (let x = 1; x < width - 1; x++) {
-			const i = y * width + x;
-			divergence[i] = -.5 * (velocityX[i + 1] - velocityX[i - 1] + velocityY[i + width] - velocityY[i - width]);
-		}
-		for (let pass = 0; pass < 3; pass++) {
-			for (let y = 1; y < height - 1; y++) for (let x = 1; x < width - 1; x++) {
-				const i = y * width + x;
-				nextPressure[i] = (divergence[i] + pressure[i - 1] + pressure[i + 1] + pressure[i - width] + pressure[i + width]) * .25;
+	let pending;
+	let phase = 0;
+	function draw() {
+		pending = undefined;
+		const width = canvas.width, height = canvas.height;
+		context.clearRect(0, 0, width, height);
+		const radius = Math.min(width * .24, height * .38);
+		for (const cloud of clouds) {
+			const homeX = cloud.x * width, homeY = cloud.y * height;
+			const dx = pointer ? homeX - pointer.x : 0, dy = pointer ? homeY - pointer.y : 0;
+			const strength = pointer ? Math.max(0, 1 - Math.hypot(dx, dy) / (radius * 2)) : 0;
+			for (let layer = 0; layer < 4; layer++) {
+				const angle = phase + layer * 1.6;
+				const x = Math.max(radius + 2, Math.min(width - radius - 2, homeX + Math.cos(angle) * strength * radius * .16));
+				const y = Math.max(radius + 2, Math.min(height - radius - 2, homeY + Math.sin(angle) * strength * radius * .16));
+				const gradient = context.createRadialGradient(x, y, 0, x, y, radius);
+				gradient.addColorStop(0, `hsla(${cloud.hue + layer * 3},85%,62%,.22)`);
+				gradient.addColorStop(.55, `hsla(${cloud.hue},85%,55%,.09)`);
+				gradient.addColorStop(1, "transparent");
+				context.fillStyle = gradient;
+				context.fillRect(x - radius, y - radius, radius * 2, radius * 2);
 			}
-			[pressure, nextPressure] = [nextPressure, pressure];
 		}
-		for (let y = 1; y < height - 1; y++) for (let x = 1; x < width - 1; x++) {
-			const i = y * width + x;
-			velocityX[i] -= .5 * (pressure[i + 1] - pressure[i - 1]);
-			velocityY[i] -= .5 * (pressure[i + width] - pressure[i - width]);
-			nextDye[i] = sample(dye, x - velocityX[i], y - velocityY[i]) * .998;
-			nextDye[i] += pigment[i] * .0008;
-		}
-		for (let x = 1; x < width - 1; x++) {
-			nextDye[x] = nextDye[x + width];
-			nextDye[(height - 1) * width + x] = nextDye[(height - 2) * width + x];
-		}
-		for (let y = 0; y < height; y++) {
-			nextDye[y * width] = nextDye[y * width + 1];
-			nextDye[y * width + width - 1] = nextDye[y * width + width - 2];
-		}
-		[dye, nextDye] = [nextDye, dye];
 	}
-	function render() {
-		for (let i = 0; i < dye.length; i++) {
-			const density = Math.min(1, dye[i]);
-			pixels.data[i * 4] = 155 + density * 55;
-			pixels.data[i * 4 + 1] = 75 + density * 30;
-			pixels.data[i * 4 + 2] = 240;
-			pixels.data[i * 4 + 3] = Math.min(240, density * 255);
-		}
-		context.putImageData(pixels, 0, 0);
-	}
-	function frame(time) {
-		setTimeout(frame, 120, performance.now());
-		if (document.hidden || document.getElementById("calculator-cover") || document.body.classList.contains("view-mode") || reducedMotion.matches) return;
-		lastFrame = time;
-		simulate(time);
-		render();
+	function schedule() {
+		if (pending !== undefined) return;
+		pending = setTimeout(draw, 100);
 	}
 	window.addEventListener("pointermove", event => {
-		if (reducedMotion.matches || document.body.classList.contains("view-mode")) return;
-		const x = event.clientX / innerWidth * width, y = event.clientY / innerHeight * height;
-		if (pointer && performance.now() - pointer.time < 80) return;
-		if (pointer) {
-			const dx = Math.max(-3, Math.min(3, x - pointer.x)), dy = Math.max(-3, Math.min(3, y - pointer.y));
-			for (let row = Math.max(1, Math.floor(y - 9)); row < Math.min(height - 1, y + 9); row++) {
-				for (let column = Math.max(1, Math.floor(x - 9)); column < Math.min(width - 1, x + 9); column++) {
-					const weight = Math.exp(-((column - x) ** 2 + (row - y) ** 2) / 25);
-					const i = row * width + column;
-					velocityX[i] += dx * weight * .7;
-					velocityY[i] += dy * weight * .7;
-				}
-			}
-		}
-		pointer = { x, y, time: performance.now() };
+		if (reduced.matches || document.hidden || document.body.classList.contains("view-mode") || document.getElementById("calculator-cover")) return;
+		pointer = { x: event.clientX / innerWidth * canvas.width, y: event.clientY / innerHeight * canvas.height };
+		phase += .04;
+		schedule();
 	}, { passive: true });
-	document.documentElement.addEventListener("pointerleave", () => { pointer = undefined; });
+	document.documentElement.addEventListener("pointerleave", () => { pointer = undefined; schedule(); });
+	function resize() {
+		canvas.width = 192;
+		canvas.height = Math.max(64, Math.min(256, Math.round(192 * innerHeight / innerWidth)));
+		draw();
+	}
 	window.addEventListener("resize", resize);
 	resize();
-	requestAnimationFrame(frame);
 })();
