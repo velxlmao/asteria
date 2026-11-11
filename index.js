@@ -10,6 +10,9 @@ const view = document.getElementById("view");
 const homeBtn = document.getElementById("home-btn");
 const loader = document.getElementById("loader");
 for (const shortcut of document.querySelectorAll("[data-shortcut]")) {
+	const label = shortcut.querySelector("span").textContent;
+	shortcut.setAttribute("aria-label", label);
+	shortcut.title = label;
 	shortcut.addEventListener("click", () => {
 		address.value = shortcut.dataset.shortcut;
 		form.requestSubmit();
