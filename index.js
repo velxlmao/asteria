@@ -44,16 +44,16 @@ let connecting = false;
 const probeClient = new BareMux.BareClient(window.__VELO_BASE + "lib/m/worker.js");
 let serviceReady = false;
 let serviceSetup;
-const checkedHosts = new Set();
+const failedServices = new Set();
+let lastDestination;
 let selectedService;
 function prepareService(target) {
-	const host = target && new URL(target).hostname;
-	if (serviceReady && (!target || checkedHosts.has(host))) return Promise.resolve();
+	if (serviceReady) return Promise.resolve();
 	if (serviceSetup) return serviceSetup.then(() => prepareService(target));
 	serviceSetup = (async () => {
 		await registerSW();
 		await scramjetReady;
-		const servers = selectedService ? [selectedService, ...window.__VELO_SERVICES.filter(server => server !== selectedService)] : window.__VELO_SERVICES;
+		const servers = window.__VELO_SERVICES.filter(server => !failedServices.has(server));
 		selectedService = await window.connectService(servers, async (serviceUrl, signal) => {
 			await connection.setTransport(window.__VELO_BASE + "lib/e/index.mjs?v=64c6bc76c5b3", [{ wisp: serviceUrl }]);
 			const response = await probeClient.fetch(target || "https://example.com/", { signal, redirect: "follow" });
@@ -61,11 +61,18 @@ function prepareService(target) {
 			if (response.status >= 500 || [403, 407, 429].includes(response.status)) throw new Error("connection unavailable");
 		}, (index, total) => connectionStatus("connecting to service " + index + "/" + total), new AbortController().signal, target ? 10000 : 5000);
 		serviceReady = true;
-		if (host) checkedHosts.add(host);
 	})().finally(() => { serviceSetup = null; });
 	return serviceSetup;
 }
 prepareService().catch(() => {});
+window.addEventListener("message", event => {
+	if (event.source !== frame?.frame?.contentWindow || event.data?.type !== "asteria-route-failed" || navigation?.signal.aborted) return;
+	if (connecting || !selectedService) return;
+	failedServices.add(selectedService);
+	serviceReady = false;
+	selectedService = undefined;
+	form.requestSubmit();
+});
 
 function connectionStatus(text) {
 	for (const el of document.querySelectorAll(".connection-status")) el.textContent = text;
@@ -87,6 +94,7 @@ form.addEventListener("submit", async (event) => {
 	navigation = controller;
 	connecting = true;
 	const url = search(address.value, searchEngine.value);
+	if (url !== lastDestination) { failedServices.clear(); lastDestination = url; }
 	home.hidden = true;
 	view.hidden = false;
 	document.body.classList.add("view-mode");

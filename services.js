@@ -2,6 +2,8 @@
 
 window.__VELO_SERVICES = ["=AzLsVmbuFGaj9idlRmLzJXZrJ3b35ic2h2chRGbhVmcuMXZ09mbtknZpN2bsVmdv8iOzN3d", "=EzLsVmbuFGaj9idlRmLzJXZrJ3b35ic2h2chRGbhVmcuMXZ09mbtknZpN2bsVmdv8iOzN3d", "=IzLsVmbuFGaj9idlRmLzJXZrJ3b35ic2h2chRGbhVmcuMXZ09mbtknZpN2bsVmdv8iOzN3d", "=MzLsVmbuFGaj9idlRmLzJXZrJ3b35ic2h2chRGbhVmcuMXZ09mbtknZpN2bsVmdv8iOzN3d", "=QzLsVmbuFGaj9idlRmLzJXZrJ3b35ic2h2chRGbhVmcuMXZ09mbtknZpN2bsVmdv8iOzN3d", "=UzLsVmbuFGaj9idlRmLzJXZrJ3b35ic2h2chRGbhVmcuMXZ09mbtknZpN2bsVmdv8iOzN3d", "=YzLsVmbuFGaj9idlRmLzJXZrJ3b35ic2h2chRGbhVmcuMXZ09mbtknZpN2bsVmdv8iOzN3d", "=czLsVmbuFGaj9idlRmLzJXZrJ3b35ic2h2chRGbhVmcuMXZ09mbtknZpN2bsVmdv8iOzN3d", "=gzLsVmbuFGaj9idlRmLzJXZrJ3b35ic2h2chRGbhVmcuMXZ09mbtknZpN2bsVmdv8iOzN3d", "=kzLsVmbuFGaj9idlRmLzJXZrJ3b35ic2h2chRGbhVmcuMXZ09mbtknZpN2bsVmdv8iOzN3d", "wEzLsVmbuFGaj9idlRmLzJXZrJ3b35ic2h2chRGbhVmcuMXZ09mbtknZpN2bsVmdv8iOzN3d", "xEzLsVmbuFGaj9idlRmLzJXZrJ3b35ic2h2chRGbhVmcuMXZ09mbtknZpN2bsVmdv8iOzN3d", "yEzLsVmbuFGaj9idlRmLzJXZrJ3b35ic2h2chRGbhVmcuMXZ09mbtknZpN2bsVmdv8iOzN3d", "zEzLsVmbuFGaj9idlRmLzJXZrJ3b35ic2h2chRGbhVmcuMXZ09mbtknZpN2bsVmdv8iOzN3d"].map(value => atob(value.split("").reverse().join("")));
 
+window.__VELO_SERVICES.unshift("wss://t9os.space/wisp-boston/");
+
 window.connectService = async function (servers, connect, progress, signal, timeout = 10000) {
 	for (let i = 0; i < servers.length; i++) {
 		signal.throwIfAborted();
