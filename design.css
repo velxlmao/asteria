@@ -108,4 +108,5 @@ body.view-mode #sidebar.peek { transform: none; }
 
 .rotating-caption.caption-changing { opacity: 0; }
 
-#sidebar, #sidebar-edge, #rain, #cursor-glow, #welcome { display: none !important; }
+#sidebar, #edge, #rain, #cursor-glow, #welcome { display: none !important; }
+#home { padding-left: calc(var(--sp) * 2); }
