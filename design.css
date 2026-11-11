@@ -119,3 +119,8 @@ body.view-mode #sidebar.peek { transform: none; }
 @keyframes wordmark-swirl { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 @keyframes wordmark-wave { 0%, 100% { translate: 0 0; rotate: -1deg; } 50% { translate: 0 -8px; rotate: 1deg; } }
 @media (prefers-reduced-motion: reduce) { #home .logo { animation: none !important; } }
+#dot-matrix { position: fixed; inset: 0; pointer-events: none; z-index: 0; background-image: radial-gradient(circle, color-mix(in srgb, var(--accent) 13%, transparent) 1px, transparent 1.5px); background-size: 26px 26px; }
+#dot-matrix::after { content: ""; position: absolute; inset: 0; background-image: radial-gradient(circle, color-mix(in srgb, var(--accent) 32%, transparent) 1px, transparent 1.5px); background-size: 26px 26px; mask-image: radial-gradient(circle 180px at var(--dot-x, 50%) var(--dot-y, 50%), black, transparent); opacity: 0; transition: opacity .5s ease; }
+#dot-matrix.reacting::after { opacity: 1; }
+body.view-mode #dot-matrix { display: none; }
+@media (prefers-reduced-motion: reduce) { #dot-matrix::after { display: none; } }
