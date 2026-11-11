@@ -4,6 +4,7 @@
 	const pageButtons = ["nav-games", "nav-apps", "nav-chat", "nav-ai", "nav-settings"];
 	for (const id of pageButtons) {
 		document.getElementById(id).addEventListener("click", () => {
+			document.body.classList.add("content-page");
 			home.hidden = true;
 			if (id === "nav-settings") window.dispatchEvent(new Event("asteria-browser-navigate"));
 			else {
@@ -17,6 +18,7 @@
 		});
 	}
 	function showHome() {
+		document.body.classList.remove("content-page");
 		home.hidden = false;
 		for (const page of document.querySelectorAll(".fullpage")) { page.hidden = true; page.classList.remove("open", "closing"); }
 		const settings = document.getElementById("settings-overlay");

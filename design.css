@@ -265,6 +265,9 @@ body.playing-game #view { top: 0; }
 .separate-page #settings-overlay { inset: 64px 16px 90px; background: transparent; align-items: flex-start; overflow: auto; }
 .separate-page #settings-panel { width: min(900px, 100%); max-height: none; margin: 20px auto; animation: none; }
 .separate-page .page-back { display: none; }
+body.content-page #browser-bar { display: none; }
+body.content-page .fullpage { top: 16px; }
+body.content-page #settings-overlay { top: 16px; }
 @media (hover: hover) and (pointer: fine) { input, textarea, [contenteditable="true"] { cursor: text !important; } }
 @media(max-width:600px) { .ai-page.open { grid-template-columns: 130px 1fr; } .ai-sidebar, .ai-main { padding: 10px; } }
 @media (hover: hover) and (pointer: fine) {
