@@ -8,11 +8,12 @@
 	const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 	let pointer;
 	let pending = false;
+	let target;
 	function draw() {
 		pending = false;
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		context.fillStyle = "rgb(199, 164, 245)";
-		context.globalAlpha = .75;
+		context.globalAlpha = .375;
 		for (let y = 16; y < canvas.height; y += 36) for (let x = 16; x < canvas.width; x += 36) {
 			let offsetX = 0, offsetY = 0;
 			if (pointer && !reduced.matches) {
@@ -28,14 +29,24 @@
 	function schedule() {
 		if (pending) return;
 		pending = true;
-		setTimeout(draw, 65);
+		requestAnimationFrame(animate);
+	}
+	function animate() {
+		pending = false;
+		if (target) {
+			pointer ||= { ...target };
+			pointer.x += (target.x - pointer.x) * .18;
+			pointer.y += (target.y - pointer.y) * .18;
+		}
+		draw();
+		if (target && Math.hypot(target.x - pointer.x, target.y - pointer.y) > .2 && !document.hidden) schedule();
 	}
 	window.addEventListener("pointermove", event => {
 		if (document.hidden || document.body.classList.contains("view-mode") || document.getElementById("calculator-cover")) return;
-		pointer = { x: event.clientX, y: event.clientY };
+		target = { x: event.clientX, y: event.clientY };
 		schedule();
 	}, { passive: true });
-	document.documentElement.addEventListener("pointerleave", () => { pointer = undefined; schedule(); });
+	document.documentElement.addEventListener("pointerleave", () => { target = undefined; pointer = undefined; schedule(); });
 	function resize() { canvas.width = innerWidth; canvas.height = innerHeight; draw(); }
 	window.addEventListener("resize", resize);
 	resize();
