@@ -203,7 +203,7 @@ body.playing-game #game-fullscreen { display: grid; place-items: center; }
 .home-shortcuts button img { width: 32px; height: 32px; }
 @media(prefers-reduced-motion:reduce) { .home-brand { animation: none; } #home .home-brand .logo { animation: none !important; } }
 .home-shortcuts { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
-.home-shortcuts button { width: 78px; padding: 14px 6px 10px; display: grid; justify-items: center; gap: 9px; color: var(--muted); background: color-mix(in srgb, var(--surface) 40%, transparent); border: 1px solid color-mix(in srgb, var(--border) 55%, transparent); border-radius: 16px; font: inherit; font-size: 11px; cursor: pointer; transition: transform .18s ease, background .18s ease, border-color .18s ease; }
+.home-shortcuts button { width: 68px; height: 68px; padding: 0; display: grid; place-items: center; gap: 0; color: var(--muted); background: color-mix(in srgb, var(--surface) 40%, transparent); border: 1px solid color-mix(in srgb, var(--border) 55%, transparent); border-radius: 16px; font: inherit; font-size: 11px; cursor: pointer; transition: transform .18s ease, background .18s ease, border-color .18s ease; }
 .home-shortcuts img { width: 23px; height: 23px; filter: invert(1); opacity: .85; }
 .home-shortcuts button:hover { transform: translateY(-3px); color: var(--text); background: color-mix(in srgb, var(--accent) 12%, transparent); border-color: var(--accent); }
 .home-shortcuts button:active { transform: translateY(0); }
