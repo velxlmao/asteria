@@ -11,7 +11,15 @@
 		document.getElementById("app")?.classList.add("revealed");
 		setTimeout(() => cover.remove(), 220);
 	});
-	cover.src = "calculator.html";
+	async function loadCalculator() {
+		if ("serviceWorker" in navigator) {
+			await navigator.serviceWorker.ready;
+			if (!navigator.serviceWorker.controller) {
+				await new Promise(resolve => navigator.serviceWorker.addEventListener("controllerchange", resolve, { once: true }));
+			}
+		}
+		cover.src = "calculator.html";
+	}
 	cover.addEventListener("load", () => {
 		let doc;
 		try { doc = cover.contentDocument; } catch { return; }
@@ -41,4 +49,5 @@
 			setTimeout(() => cover.remove(), 220);
 		}, true);
 	});
+	loadCalculator();
 })();
