@@ -262,6 +262,7 @@
 	}
 
 	function launch(url, g) {
+		document.body.classList.toggle("playing-game", GAMES.includes(g));
 		if (g && g.local) return launchLocal(url, g);
 		// loader is on top (z-index 10), so show it now and close the games
 		// page underneath without waiting on its animation
@@ -404,6 +405,23 @@
 	navs.apps.addEventListener("click", () => openPage("apps"));
 	navs.chat.addEventListener("click", () => openPage("chat"));
 	 navs.ai.addEventListener("click", () => openPage("ai"));
+	const dockZone = document.createElement("div");
+	dockZone.id = "game-dock-zone";
+	document.body.append(dockZone);
+	const fullscreen = document.createElement("button");
+	fullscreen.id = "game-fullscreen";
+	fullscreen.type = "button";
+	fullscreen.textContent = "⛶";
+	fullscreen.setAttribute("aria-label", "fullscreen game");
+	fullscreen.title = "fullscreen game";
+	document.getElementById("view").append(fullscreen);
+	fullscreen.addEventListener("click", async () => {
+		try {
+			if (document.fullscreenElement) await document.exitFullscreen();
+			else await document.getElementById("view").requestFullscreen();
+		} catch { fullscreen.title = "fullscreen unavailable in this browser"; }
+	});
+	document.getElementById("home-btn").addEventListener("click", () => document.body.classList.remove("playing-game"));
 	navHome.addEventListener("click", () => closeCurrent());
 
 	for (const name of Object.keys(pages)) {

@@ -19,6 +19,69 @@
 	aside.append(newChat, chatsList);
 	const main = element("main", "ai-main");
 	const heading = element("header", "", "asteria ai");
+	const share = element("button", "ai-share", "screenshare");
+	share.type = "button";
+	const floating = element("button", "ai-float", "float over tabs");
+	floating.type = "button";
+	floating.hidden = true;
+	heading.append(share, floating);
+	let screenStream;
+	let screenVideo;
+	let floatingWindow;
+	function stopSharing() {
+		for (const track of screenStream?.getTracks() || []) track.stop();
+		screenStream = null;
+		screenVideo?.remove();
+		screenVideo = null;
+		share.textContent = "screenshare";
+		floating.hidden = true;
+		page.classList.remove("ai-sharing");
+		floatingWindow?.close();
+		status.textContent = "screenshare stopped";
+	}
+	share.addEventListener("click", async () => {
+		if (screenStream) return stopSharing();
+		if (!navigator.mediaDevices?.getDisplayMedia) { status.textContent = "screenshare is unavailable in this browser"; return; }
+		try {
+			screenStream = await navigator.mediaDevices.getDisplayMedia({ video: { displaySurface: "browser" }, audio: false, preferCurrentTab: false, selfBrowserSurface: "exclude", surfaceSwitching: "include" });
+			screenVideo = document.createElement("video");
+			screenVideo.muted = true;
+			screenVideo.srcObject = screenStream;
+			await screenVideo.play();
+			screenStream.getVideoTracks()[0].addEventListener("ended", stopSharing, { once: true });
+			share.textContent = "stop sharing";
+			page.classList.add("ai-sharing");
+			floating.hidden = !window.documentPictureInPicture;
+			status.textContent = "each question sends a screenshot to the ai provider";
+		} catch (error) { if (screenStream) stopSharing(); status.textContent = error.name === "NotAllowedError" ? "screen sharing cancelled or denied" : "could not start screenshare"; }
+	});
+	floating.addEventListener("click", async () => {
+		try {
+			floatingWindow = await window.documentPictureInPicture.requestWindow({ width: 400, height: 520 });
+			const doc = floatingWindow.document;
+			for (const sheet of document.querySelectorAll('link[rel="stylesheet"]')) {
+				const link = doc.createElement("link");
+				link.rel = "stylesheet";
+				link.href = sheet.href;
+				doc.head.append(link);
+			}
+			doc.documentElement.dataset.theme = document.documentElement.dataset.theme || "";
+			doc.body.className = "ai-pip";
+			doc.body.append(main);
+			floating.hidden = true;
+			floatingWindow.addEventListener("pagehide", () => { page.append(main); floatingWindow = null; floating.hidden = !screenStream; });
+		} catch { status.textContent = "could not open floating window"; }
+	});
+	function screenshot() {
+		if (!screenStream) return undefined;
+		if (screenStream.getVideoTracks()[0].readyState !== "live" || !screenVideo.videoWidth) throw new Error("screen is unavailable, share the tab again");
+		const canvas = document.createElement("canvas");
+		const scale = Math.min(1, 1440 / screenVideo.videoWidth);
+		canvas.width = Math.round(screenVideo.videoWidth * scale);
+		canvas.height = Math.round(screenVideo.videoHeight * scale);
+		canvas.getContext("2d").drawImage(screenVideo, 0, 0, canvas.width, canvas.height);
+		return canvas.toDataURL("image/jpeg", .78);
+	}
 	const messages = element("div", "ai-messages");
 	const form = element("form", "ai-compose");
 	const input = element("textarea", "");
@@ -76,7 +139,8 @@
 		status.textContent = "thinking…";
 		render();
 		try {
-			const response = await fetch("https://asteria-ai.realdashvr.workers.dev/", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ messages: history }), signal: AbortSignal.timeout(95000) });
+			const image = screenshot();
+			const response = await fetch("https://asteria-ai.realdashvr.workers.dev/", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ messages: history, image }), signal: AbortSignal.timeout(95000) });
 			const data = await response.json();
 			if (!response.ok) throw new Error(data.error || "request failed");
 			current.messages.push({ role: "assistant", content: data.content });
