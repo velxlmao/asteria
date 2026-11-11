@@ -1,4 +1,12 @@
 (() => {
+	const unlockedKey = "asteria-calculator-unlocked";
+	try {
+		if (localStorage.getItem(unlockedKey) === "1") {
+			document.documentElement.classList.add("calculator-unlocked");
+			document.getElementById("app")?.classList.add("revealed");
+			return;
+		}
+	} catch {}
 	const cover = document.createElement("iframe");
 	cover.id = "calculator-cover";
 	cover.title = "Graphing Calculator";
@@ -6,6 +14,7 @@
 	document.body.append(cover);
 	window.addEventListener("message", event => {
 		if (event.source !== cover.contentWindow || event.data?.type !== "asteria-calculator-unlock") return;
+		try { localStorage.setItem(unlockedKey, "1"); } catch {}
 		cover.style.opacity = "0";
 		document.documentElement.classList.add("calculator-unlocked");
 		document.getElementById("app")?.classList.add("revealed");
@@ -43,6 +52,7 @@
 			if (event.target.textContent.trim().toLowerCase() !== "all") return;
 			const text = doc.querySelector(".dcg-mq-root-block")?.textContent.replace(/\s/g, "").toLowerCase();
 			if (text !== "asteria") return;
+			try { localStorage.setItem(unlockedKey, "1"); } catch {}
 			cover.style.opacity = "0";
 			document.documentElement.classList.add("calculator-unlocked");
 			document.getElementById("app")?.classList.add("revealed");
