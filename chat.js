@@ -64,7 +64,11 @@
    const row = document.createElement('article'); row.className = 'chat-message';
    const grouped = previous && previous.authorId === message.authorId && previous.name === message.name && message.time - previous.time < 300000 && new Date(previous.time).toDateString() === new Date(message.time).toDateString();
    if (grouped) row.classList.add('grouped');
-   if (isMine(message)) row.classList.add('own');
+   const mine = isMine(message);
+   row.classList.toggle('own', mine);
+   row.style.alignSelf = mine ? 'flex-start' : 'flex-end';
+   row.style.marginLeft = mine ? '0' : 'auto';
+   row.style.marginRight = mine ? 'auto' : '0';
    const heading = document.createElement('header'), author = document.createElement('strong'), time = document.createElement('time'), text = document.createElement('p');
    author.textContent = message.name; time.dateTime = new Date(message.time).toISOString(); time.textContent = new Date(message.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
    text.textContent = message.text; heading.append(author);
