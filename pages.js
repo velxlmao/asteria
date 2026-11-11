@@ -66,9 +66,9 @@
 
 	// ---- catalogues ----
 	const GAMES = [
-		{ name: "Plague Inc.", url: "https://wasm.rip/files/plauge/index.html?ref=playgamesinbrowser", img: "games/plague-inc.png", local: true, splash: "load" },
-		{ name: "Among Us (Legacy)", url: "https://wasm.rip/files/amongus/legacy/", img: "games/among-us.webp", local: true, splash: "load" },
-		{ name: "Among Us (2026)", url: "https://wasm.rip/files/amongus/latest/", img: "games/among-us.webp", local: true, splash: "load" },
+		{ name: "Plague Inc.", url: "https://wasm.rip/files/plauge/index.html?ref=playgamesinbrowser", img: "games/plague-inc.png", splash: "load" },
+		{ name: "Among Us (Legacy)", url: "https://wasm.rip/files/amongus/legacy/", img: "games/among-us.webp", splash: "load" },
+		{ name: "Among Us (2026)", url: "https://wasm.rip/files/amongus/latest/", img: "games/among-us.webp", splash: "load" },
 		{ name: "Untitled Goose Game", url: "games/untitled-goose-game/index.html", img: "games/untitled-goose-game.jpg", local: true, download: true },
 		{ name: "Totally Accurate Battle Simulator", url: "games/tabs/index.html", img: "games/tabs.jpg", local: true, download: true },
 		{ name: "Clustertruck", url: "games/clustertruck/index.html", img: "games/clustertruck.jpg", local: true, download: true },
