@@ -2,6 +2,16 @@
 (() => {
  const $ = id => document.getElementById(id);
  const list = $('chat-messages'), input = $('chat-input'), name = $('chat-name');
+ const sidebar = document.createElement('aside'); sidebar.className = 'chat-channel-sidebar';
+ const serverTitle = document.createElement('h2'); serverTitle.textContent = 'asteria';
+ const channelLabel = document.createElement('p'); channelLabel.className = 'chat-channel-label'; channelLabel.textContent = 'text channels';
+ const channel = document.createElement('button'); channel.type = 'button'; channel.className = 'chat-channel active'; channel.textContent = '# general'; channel.setAttribute('aria-current', 'page');
+ channel.addEventListener('click', () => input.focus());
+ const profile = document.createElement('div'); profile.className = 'chat-profile-settings';
+ profile.append(document.querySelector('.chat-header-controls'), document.querySelector('.chat-header-notes'));
+ sidebar.append(serverTitle, channelLabel, channel, profile); $('chat-page').prepend(sidebar);
+ document.querySelector('#chat-page .page-title').textContent = '# general';
+ input.placeholder = 'message #general';
  let suspended = false, started = false, registered = false, banned = false;
  let browserToken;
  try { browserToken = localStorage.getItem('asteria-browser-token'); } catch {}
@@ -33,10 +43,20 @@
  }
  function render() {
   const follow = list.scrollHeight - list.scrollTop - list.clientHeight < 120;
+  const previousScroll = list.scrollTop;
   list.replaceChildren();
   if (!messages.size) { const empty = document.createElement('p'); empty.className = 'chat-empty'; empty.textContent = 'no messages yet'; list.append(empty); }
+  let previous;
   for (const message of messages.values()) {
+   const date = new Date(message.time).toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' });
+   if (!previous || new Date(previous.time).toDateString() !== new Date(message.time).toDateString()) {
+    const divider = document.createElement('div'); divider.className = 'chat-day-divider'; divider.textContent = date; list.append(divider);
+   }
    const row = document.createElement('article'); row.className = 'chat-message';
+   const grouped = previous && previous.authorId === message.authorId && previous.name === message.name && message.time - previous.time < 300000 && new Date(previous.time).toDateString() === new Date(message.time).toDateString();
+   if (grouped) row.classList.add('grouped');
+   const avatar = document.createElement('span'); avatar.className = 'chat-avatar'; avatar.textContent = Array.from(message.name || '?')[0].toUpperCase(); avatar.setAttribute('aria-hidden', 'true');
+   row.append(avatar);
    if (message.authorId === ownId) row.classList.add('own');
    const heading = document.createElement('header'), author = document.createElement('strong'), time = document.createElement('time'), text = document.createElement('p');
    author.textContent = message.name; time.dateTime = new Date(message.time).toISOString(); time.textContent = new Date(message.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -51,8 +71,10 @@
     heading.append(remove);
    }
    row.append(heading, text); list.append(row);
+   previous = message;
   }
   if (follow) list.scrollTop = list.scrollHeight;
+  else list.scrollTop = previousScroll;
  }
  function expireMessages() {
   if (!ttlSeconds) return;
@@ -146,6 +168,9 @@
   catch { pending = ''; error('Message not sent. Reconnect and try again.'); controls(); }
  });
  input.addEventListener('input', controls);
+ input.addEventListener('keydown', event => {
+  if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) { event.preventDefault(); $('chat-form').requestSubmit(); }
+ });
  $('chat-clear').addEventListener('click', () => { if (owner && ready && confirm('delete all messages in public chat? this cannot be undone.')) moderate({ type: 'clear-chat' }); });
  $('chat-expiry').addEventListener('change', () => moderate({ type: 'set-expiry', seconds: Number($('chat-expiry').value) }));
  setInterval(() => { if (visible) expireMessages(); }, 1000);
