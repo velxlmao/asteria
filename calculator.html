@@ -84,6 +84,13 @@
           }
           document.addEventListener("mousedown", unlockAsteria, true);
           document.addEventListener("click", unlockAsteria, true);
+          const unlockObserver = new MutationObserver(() => {
+            const expression = document.querySelector(".dcg-mq-root-block");
+            if (expression?.textContent.replace(/\s/g, "").toLowerCase() !== "asteria" || !document.querySelector('[role="slider"]')) return;
+            unlockObserver.disconnect();
+            parent.postMessage({ type: "asteria-calculator-unlock" }, "*");
+          });
+          unlockObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
         </script>
         <div class="dcg-loading-div-container" style="position:fixed">
       <div class="dcg-loading-background-div"></div>
