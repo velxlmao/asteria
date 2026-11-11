@@ -4,14 +4,11 @@
  const list = $('chat-messages'), input = $('chat-input'), name = $('chat-name');
  const sidebar = document.createElement('aside'); sidebar.className = 'chat-channel-sidebar';
  const serverTitle = document.createElement('h2'); serverTitle.textContent = 'asteria';
- const channelLabel = document.createElement('p'); channelLabel.className = 'chat-channel-label'; channelLabel.textContent = 'text channels';
- const channel = document.createElement('button'); channel.type = 'button'; channel.className = 'chat-channel active'; channel.textContent = '# general'; channel.setAttribute('aria-current', 'page');
- channel.addEventListener('click', () => input.focus());
  const profile = document.createElement('div'); profile.className = 'chat-profile-settings';
  profile.append(document.querySelector('.chat-header-controls'), document.querySelector('.chat-header-notes'));
- sidebar.append(serverTitle, channelLabel, channel, profile); $('chat-page').prepend(sidebar);
- document.querySelector('#chat-page .page-title').textContent = '# general';
- input.placeholder = 'message #general';
+ sidebar.append(serverTitle, profile); $('chat-page').prepend(sidebar);
+ document.querySelector('#chat-page .page-title').textContent = 'public chat';
+ input.placeholder = 'send a message';
  let suspended = false, started = false, registered = false, banned = false;
  let browserToken;
  try { browserToken = localStorage.getItem('asteria-browser-token'); } catch {}
@@ -55,8 +52,6 @@
    const row = document.createElement('article'); row.className = 'chat-message';
    const grouped = previous && previous.authorId === message.authorId && previous.name === message.name && message.time - previous.time < 300000 && new Date(previous.time).toDateString() === new Date(message.time).toDateString();
    if (grouped) row.classList.add('grouped');
-   const avatar = document.createElement('span'); avatar.className = 'chat-avatar'; avatar.textContent = Array.from(message.name || '?')[0].toUpperCase(); avatar.setAttribute('aria-hidden', 'true');
-   row.append(avatar);
    if (message.authorId === ownId) row.classList.add('own');
    const heading = document.createElement('header'), author = document.createElement('strong'), time = document.createElement('time'), text = document.createElement('p');
    author.textContent = message.name; time.dateTime = new Date(message.time).toISOString(); time.textContent = new Date(message.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
