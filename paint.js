@@ -6,20 +6,22 @@
 	document.body.prepend(canvas);
 	const context = canvas.getContext("2d", { alpha: true });
 	if (!context) return;
-	let width, height, velocityX, velocityY, nextX, nextY, dye, nextDye, pressure, nextPressure, divergence, pixels;
+	let width, height, velocityX, velocityY, nextX, nextY, dye, nextDye, pressure, nextPressure, divergence, pixels, pigment;
 	let pointer;
 	let lastFrame = 0;
-	const sources = [[.22, .35], [.75, .65], [.48, .82]];
+	const sources = [[.15, .2], [.72, .24], [.38, .55], [.8, .76], [.15, .88]];
 	function resize() {
-		width = 96;
+		width = 64;
 		height = Math.max(32, Math.min(160, Math.round(width * innerHeight / innerWidth)));
 		canvas.width = width;
 		canvas.height = height;
 		const size = width * height;
 		[velocityX, velocityY, nextX, nextY, dye, nextDye, pressure, nextPressure, divergence] = Array.from({ length: 9 }, () => new Float32Array(size));
 		pixels = context.createImageData(width, height);
+		pigment = new Float32Array(size);
 		for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
-			for (const [sx, sy] of sources) dye[y * width + x] += Math.exp(-((x - sx * width) ** 2 + (y - sy * height) ** 2) / 160) * .55;
+			for (const [sx, sy] of sources) pigment[y * width + x] += Math.exp(-((x - sx * width) ** 2 + (y - sy * height) ** 2) / 110);
+			dye[y * width + x] = pigment[y * width + x] * .8;
 		}
 		pointer = undefined;
 		render();
@@ -46,7 +48,7 @@
 			const i = y * width + x;
 			divergence[i] = -.5 * (velocityX[i + 1] - velocityX[i - 1] + velocityY[i + width] - velocityY[i - width]);
 		}
-		for (let pass = 0; pass < 12; pass++) {
+		for (let pass = 0; pass < 6; pass++) {
 			for (let y = 1; y < height - 1; y++) for (let x = 1; x < width - 1; x++) {
 				const i = y * width + x;
 				nextPressure[i] = (divergence[i] + pressure[i - 1] + pressure[i + 1] + pressure[i - width] + pressure[i + width]) * .25;
@@ -58,7 +60,15 @@
 			velocityX[i] -= .5 * (pressure[i + 1] - pressure[i - 1]);
 			velocityY[i] -= .5 * (pressure[i + width] - pressure[i - width]);
 			nextDye[i] = sample(dye, x - velocityX[i], y - velocityY[i]) * .998;
-			for (const [sx, sy] of sources) nextDye[i] += Math.exp(-((x - sx * width) ** 2 + (y - sy * height) ** 2) / 100) * .0015;
+			nextDye[i] += pigment[i] * .002;
+		}
+		for (let x = 1; x < width - 1; x++) {
+			nextDye[x] = nextDye[x + width];
+			nextDye[(height - 1) * width + x] = nextDye[(height - 2) * width + x];
+		}
+		for (let y = 0; y < height; y++) {
+			nextDye[y * width] = nextDye[y * width + 1];
+			nextDye[y * width + width - 1] = nextDye[y * width + width - 2];
 		}
 		[dye, nextDye] = [nextDye, dye];
 	}
@@ -68,13 +78,13 @@
 			pixels.data[i * 4] = 155 + density * 55;
 			pixels.data[i * 4 + 1] = 75 + density * 30;
 			pixels.data[i * 4 + 2] = 240;
-			pixels.data[i * 4 + 3] = Math.min(220, density * 230);
+			pixels.data[i * 4 + 3] = Math.min(240, density * 255);
 		}
 		context.putImageData(pixels, 0, 0);
 	}
 	function frame(time) {
 		requestAnimationFrame(frame);
-		if (document.hidden || document.body.classList.contains("view-mode") || reducedMotion.matches || time - lastFrame < 33) return;
+		if (document.hidden || document.getElementById("calculator-cover") || document.body.classList.contains("view-mode") || reducedMotion.matches || time - lastFrame < 50) return;
 		lastFrame = time;
 		simulate(time);
 		render();
