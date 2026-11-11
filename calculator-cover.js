@@ -24,11 +24,9 @@
 			attempts++;
 			if (initialize() || attempts > 60) clearInterval(timer);
 		}, 250);
-		doc.addEventListener("click", event => {
-			const button = event.target.closest("button,[role=button],.dcg-btn-blue");
-			if (!button || button.textContent.trim().toLowerCase() !== "all") return;
-			const first = doc.querySelector(".dcg-expressionitem");
-			const text = first?.querySelector(".dcg-mq-root-block")?.textContent.replace(/\s/g, "").toLowerCase();
+		doc.addEventListener("pointerdown", event => {
+			if (event.target.textContent.trim().toLowerCase() !== "all") return;
+			const text = doc.querySelector(".dcg-mq-root-block")?.textContent.replace(/\s/g, "").toLowerCase();
 			if (text !== "asteria") return;
 			cover.style.opacity = "0";
 			document.documentElement.classList.add("calculator-unlocked");
