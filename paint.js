@@ -65,10 +65,10 @@
 	function render() {
 		for (let i = 0; i < dye.length; i++) {
 			const density = Math.min(1, dye[i]);
-			pixels.data[i * 4] = 130 + density * 45;
-			pixels.data[i * 4 + 1] = 50;
+			pixels.data[i * 4] = 155 + density * 55;
+			pixels.data[i * 4 + 1] = 75 + density * 30;
 			pixels.data[i * 4 + 2] = 240;
-			pixels.data[i * 4 + 3] = density * 100;
+			pixels.data[i * 4 + 3] = Math.min(220, density * 230);
 		}
 		context.putImageData(pixels, 0, 0);
 	}

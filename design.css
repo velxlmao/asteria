@@ -124,7 +124,7 @@ body.view-mode #sidebar.peek { transform: none; }
 #dot-matrix { background-image: none; }
 #dot-matrix::after { display: none; }
 #dot-matrix i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: var(--accent); opacity: .13; transition: translate .45s ease-out; }
-#reactive-paint { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: .6; filter: blur(12px); }
+#reactive-paint { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: .95; filter: blur(8px); }
 body.view-mode #reactive-paint { display: none; }
 #sidebar { display: flex; flex-direction: row; top: auto; bottom: 16px; left: 50%; width: max-content; max-width: calc(100vw - 24px); height: 58px; padding: 7px; gap: 5px; transform: translateX(-50%); z-index: 4; border: 1px solid color-mix(in srgb, var(--text) 12%, transparent); border-radius: 18px; background: color-mix(in srgb, var(--surface) 45%, transparent); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 8px 28px color-mix(in srgb, var(--bg) 25%, transparent); }
 #sidebar .nav-btn { width: 42px; height: 42px; margin: 0; border-radius: 12px; transition: transform .18s ease, background .18s ease; }
@@ -215,6 +215,14 @@ body.playing-game #game-fullscreen { display: grid; place-items: center; }
 .ai-messages, #chat-messages { overscroll-behavior: contain; overflow-y: auto; }
 .ai-compose { min-width: 0; }
 .ai-compose textarea, #chat-input, #chat-name, #sj-address { user-select: text; -webkit-user-select: text; }
+:root { --muted: #c4b9d5; --border: #59446e; --surface: #281d38; --text: #f4eefc; }
+#dot-matrix i { opacity: .24; }
+#sidebar { background: color-mix(in srgb, var(--surface) 68%, transparent); border-color: color-mix(in srgb, var(--text) 25%, transparent); }
+.home-shortcuts button, .game-tile { background: color-mix(in srgb, var(--surface) 68%, transparent); border-color: color-mix(in srgb, var(--text) 22%, transparent); }
+.home-shortcuts img { opacity: 1; }
+.rotating-caption { opacity: .75; }
+#sj-form, .ai-compose { background: color-mix(in srgb, var(--surface) 80%, transparent); border-color: color-mix(in srgb, var(--text) 28%, transparent); }
+.fullpage { background: color-mix(in srgb, var(--bg) 55%, transparent); border-color: color-mix(in srgb, var(--accent) 30%, transparent); }
 @media (hover: hover) and (pointer: fine) { input, textarea, [contenteditable="true"] { cursor: text !important; } }
 @media(max-width:600px) { .ai-page.open { grid-template-columns: 130px 1fr; } .ai-sidebar, .ai-main { padding: 10px; } }
 @media (hover: hover) and (pointer: fine) {
