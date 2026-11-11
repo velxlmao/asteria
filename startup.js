@@ -24,20 +24,14 @@ window.startupReady = (async () => {
 		["preparing workspace", () => expect(document.getElementById("sj-address"))],
 	];
 	const total = steps.length;
-	const started = performance.now();
 	let completed = 0;
-	app.inert = true;
-	const update = () => {
-		progress.value = Math.min(completed / total, (performance.now() - started) / 5000) * 100;
-	};
-	const interval = setInterval(update, 50);
+	app.inert = false;
 	try {
 		for (let index = 0; index < total; index++) {
 			status.textContent = steps[index][0] + " " + (index + 1) + "/" + total;
 			await steps[index][1]();
 			completed++;
-			const remaining = Math.max(0, 5000 - (performance.now() - started));
-			await new Promise((resolve) => setTimeout(resolve, remaining / (total - index)));
+			progress.value = completed / total * 100;
 		}
 		progress.value = 100;
 		screen.hidden = true;
@@ -47,8 +41,6 @@ window.startupReady = (async () => {
 		status.textContent = error.message;
 		document.getElementById("startup-retry").hidden = false;
 		return false;
-	} finally {
-		clearInterval(interval);
 	}
 })();
 

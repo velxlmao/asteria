@@ -17,8 +17,13 @@
  let owner = false, ttlSeconds = 0, clockOffset = 0, moderating = false, moderationTimer;
  const messages = new Map();
  const sentMessageIds = new Set();
- try { for (const id of JSON.parse(localStorage.getItem('asteria-sent-message-ids') || '[]')) sentMessageIds.add(id); } catch {}
+ try { for (const id of JSON.parse(localStorage.getItem('asteria-sent-message-ids') || '[]')) if (typeof id === 'string' && id) sentMessageIds.add(id); } catch {}
+ function sameBrowser(message) { return typeof ownId === 'string' && ownId.length > 0 && typeof message.authorId === 'string' && message.authorId === ownId; }
+ function isMine(message) {
+  return sameBrowser(message) || typeof message.id === 'string' && sentMessageIds.has(message.id) || owner && message.owner === true && message.name?.toLowerCase() === 'velx';
+ }
  function rememberSent(message) {
+  if (typeof message.id !== 'string' || !message.id) return;
   sentMessageIds.add(message.id);
   while (sentMessageIds.size > 500) sentMessageIds.delete(sentMessageIds.values().next().value);
   try { localStorage.setItem('asteria-sent-message-ids', JSON.stringify([...sentMessageIds])); } catch {}
@@ -59,7 +64,7 @@
    const row = document.createElement('article'); row.className = 'chat-message';
    const grouped = previous && previous.authorId === message.authorId && previous.name === message.name && message.time - previous.time < 300000 && new Date(previous.time).toDateString() === new Date(message.time).toDateString();
    if (grouped) row.classList.add('grouped');
-   if (message.authorId === ownId || sentMessageIds.has(message.id) || owner && message.owner === true) row.classList.add('own');
+   if (isMine(message)) row.classList.add('own');
    const heading = document.createElement('header'), author = document.createElement('strong'), time = document.createElement('time'), text = document.createElement('p');
    author.textContent = message.name; time.dateTime = new Date(message.time).toISOString(); time.textContent = new Date(message.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
    text.textContent = message.text; heading.append(author);
@@ -129,15 +134,15 @@
      if (Number.isFinite(data.serverTime)) clockOffset = data.serverTime - Date.now();
      finishedModeration(); retention(); expireMessages(); render(); controls();
     }
-    if (data.type === 'named') { ownId = data.id; ready = true; owner = data.owner === true; name.value = data.name; error(); render(); controls(); }
+    if (data.type === 'named') { ownId = typeof data.id === 'string' ? data.id : ''; ready = true; owner = data.owner === true; name.value = data.name; error(); render(); controls(); }
     if (data.type === 'announcement') window.dispatchEvent(new CustomEvent('velx-announcements', { detail: data.announcement ? [data.announcement] : [] }));
     if (data.type === 'announcement-sent' || data.type === 'announcement-cleared') window.dispatchEvent(new CustomEvent('velx-announcement-sent', { detail: data.type }));
     if (data.type === 'message') {
-     if (data.message.authorId === ownId) rememberSent(data.message);
+     if (sameBrowser(data.message)) rememberSent(data.message);
      if (!messages.has(data.message.id) && data.message.authorId !== ownId) window.dispatchEvent(new CustomEvent('velx-chat-notification', { detail: data.message }));
      messages.set(data.message.id, data.message);
      while (messages.size > 100) messages.delete(messages.keys().next().value);
-     if (data.message.authorId === ownId && pending) { pending = ''; input.value = ''; error(); }
+     if (sameBrowser(data.message) && pending) { pending = ''; input.value = ''; error(); }
      render(); controls();
     }
     if (data.type === 'error') {
