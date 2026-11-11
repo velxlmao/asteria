@@ -19,6 +19,15 @@
 	let animating = false;
 
 	function hide(el, nav, then) {
+		if (document.documentElement.classList.contains("separate-page")) {
+			if (el === pages.chat) window.dispatchEvent(new Event("velx-chat-close"));
+			el.hidden = true;
+			el.classList.remove("open", "closing");
+			nav?.classList.remove("active");
+			animating = false;
+			if (then) then();
+			return;
+		}
 		if (el === pages.chat) window.dispatchEvent(new Event("velx-chat-close"));
 		animating = true;
 		el.classList.remove("open");
