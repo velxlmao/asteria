@@ -116,7 +116,19 @@
 	}
 	const messages = element("div", "ai-messages");
 	const welcome = element("section", "ai-welcome");
-	const greeting = element("h2", "", "what can i help with?");
+	const greeting = element("h2", "", "what can i ");
+	const greetingPhrases = ["help with?", "do for you?", "imagine?", "improve?", "create?", "explain?", "explore?", "build?"];
+	const greetingPhrase = element("span", "ai-greeting-phrase", greetingPhrases[0]);
+	greeting.append(greetingPhrase);
+	let greetingIndex = 0;
+	setInterval(async () => {
+		if (welcome.hidden || main.ownerDocument.hidden) return;
+		const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		if (!reducedMotion) await greetingPhrase.animate([{ opacity: 1, transform: "translateY(0)" }, { opacity: 0, transform: "translateY(-8px)" }], { duration: 180, easing: "ease-in", fill: "forwards" }).finished;
+		greetingIndex = (greetingIndex + 1) % greetingPhrases.length;
+		greetingPhrase.textContent = greetingPhrases[greetingIndex];
+		if (!reducedMotion) greetingPhrase.animate([{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "translateY(0)" }], { duration: 260, easing: "ease-out", fill: "forwards" });
+	}, 2000);
 	welcome.append(greeting);
 	const form = element("form", "ai-compose");
 	const input = element("textarea", "");
