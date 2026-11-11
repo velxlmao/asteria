@@ -195,6 +195,10 @@ body.playing-game #game-fullscreen { display: grid; place-items: center; }
 @media(max-width:640px) { .fullpage { inset: 10px 10px 88px; border-radius: 16px; } .page-head { padding: 16px; flex-wrap: wrap; } .ai-main { padding: 14px; } }
 @media(prefers-reduced-motion:reduce) { .ai-wordmark { animation: none; } }
 .fullpage > .page-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.home-brand { display: flex; align-items: center; justify-content: center; gap: 18px; }
+.home-brand-symbol { display: block; position: relative; width: clamp(70px, 10vw, 110px); height: clamp(55px, 8vw, 86px); overflow: hidden; flex: none; mix-blend-mode: screen; }
+.home-brand-symbol img { position: absolute; width: 164%; max-width: none; height: auto; left: -31%; top: -62%; }
+@media(max-width:480px) { .home-brand { gap: 10px; } #home .home-brand .logo { font-size: clamp(44px, 12vw, 60px); } }
 .ai-sidebar, .ai-main { min-width: 0; min-height: 0; }
 .ai-main { grid-template-rows: auto minmax(0, 1fr) auto auto; }
 .ai-messages, #chat-messages { overscroll-behavior: contain; overflow-y: auto; }
