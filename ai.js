@@ -5,11 +5,23 @@
 		if (text) node.textContent = text;
 		return node;
 	}
-	const button = element("button", "nav-btn", "AI");
+	const button = element("button", "nav-btn");
+	const robot = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+	robot.setAttribute("viewBox", "0 0 24 24");
+	robot.setAttribute("fill", "none");
+	robot.setAttribute("stroke", "currentColor");
+	robot.setAttribute("stroke-width", "1.7");
+	robot.setAttribute("stroke-linecap", "round");
+	robot.setAttribute("stroke-linejoin", "round");
+	robot.setAttribute("aria-hidden", "true");
+	const robotPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+	robotPath.setAttribute("d", "M12 3v3M9 3h3M5 8h14v12H5zM2 12v4m20-4v4M9 12v2m6-2v2m-6 3h6");
+	robot.append(robotPath);
+	button.append(robot);
 	button.id = "nav-ai";
 	button.title = "ai";
 	button.setAttribute("aria-label", "ai chat");
-	document.getElementById("sidebar").append(button);
+	document.getElementById("sidebar").insertBefore(button, document.getElementById("nav-settings"));
 	const page = element("section", "fullpage ai-page");
 	page.id = "ai-page";
 	page.hidden = true;
