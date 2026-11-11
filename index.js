@@ -9,6 +9,12 @@ const home = document.getElementById("home");
 const view = document.getElementById("view");
 const homeBtn = document.getElementById("home-btn");
 const loader = document.getElementById("loader");
+for (const shortcut of document.querySelectorAll("[data-shortcut]")) {
+	shortcut.addEventListener("click", () => {
+		address.value = shortcut.dataset.shortcut;
+		form.requestSubmit();
+	});
+}
 
 const { ScramjetController } = $scramjetLoadController();
 
