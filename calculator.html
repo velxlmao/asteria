@@ -77,6 +77,15 @@
     </style>
       </head>
       <body data-load-data="{&quot;initialProduct&quot;:&quot;graphing&quot;}">
+        <script>
+          function unlockAsteria(event) {
+            if (event.target.textContent.trim().toLowerCase() !== "all") return;
+            const expression = document.querySelector(".dcg-mq-root-block");
+            if (expression && expression.textContent.replace(/\s/g, "").toLowerCase() === "asteria") parent.postMessage({ type: "asteria-calculator-unlock" }, "*");
+          }
+          document.addEventListener("mousedown", unlockAsteria, true);
+          document.addEventListener("click", unlockAsteria, true);
+        </script>
         <div class="dcg-loading-div-container" style="position:fixed">
       <div class="dcg-loading-background-div"></div>
       <div class="dcg-loading-div">Loading...</div>
