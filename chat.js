@@ -66,9 +66,9 @@
    if (grouped) row.classList.add('grouped');
    const mine = isMine(message);
    row.classList.toggle('own', mine);
-   row.style.alignSelf = mine ? 'flex-start' : 'flex-end';
-   row.style.marginLeft = mine ? '0' : 'auto';
-   row.style.marginRight = mine ? 'auto' : '0';
+   row.style.alignSelf = mine ? 'flex-end' : 'flex-start';
+   row.style.marginLeft = mine ? 'auto' : '0';
+   row.style.marginRight = mine ? '0' : 'auto';
    const heading = document.createElement('header'), author = document.createElement('strong'), time = document.createElement('time'), text = document.createElement('p');
    author.textContent = message.name; time.dateTime = new Date(message.time).toISOString(); time.textContent = new Date(message.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
    text.textContent = message.text; heading.append(author);
