@@ -226,17 +226,22 @@ body.playing-game #game-fullscreen { display: grid; place-items: center; }
 .fullpage { backdrop-filter: none; -webkit-backdrop-filter: none; background: color-mix(in srgb, var(--bg) 86%, transparent); }
 #sidebar { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 #dot-matrix { width: 100vw; height: 100vh; overflow: hidden; contain: paint; }
-#browser-bar { position: fixed; top: 0; left: 0; right: 0; height: 56px; z-index: 25; display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: var(--surface); border-bottom: 1px solid var(--border); }
-#browser-bar button { width: 36px; height: 36px; flex: none; border: 0; border-radius: 10px; background: transparent; color: var(--text); font-size: 20px; cursor: pointer; }
+#browser-bar { position: fixed; top: 14px; left: 18px; right: 18px; height: 46px; z-index: 25; display: flex; align-items: center; gap: 10px; padding: 0; background: transparent; border: 0; pointer-events: none; }
+#browser-bar > * { pointer-events: auto; }
+#browser-bar button { width: 46px; height: 46px; flex: none; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); color: var(--text); font-size: 22px; cursor: pointer; box-shadow: 0 4px 12px color-mix(in srgb, var(--bg) 18%, transparent); }
+#browser-menu { order: 0; }
+#browser-address-form { order: 1; }
+#browser-back { order: 2; }
+#browser-forward { order: 3; }
 #browser-bar button:hover { background: color-mix(in srgb, var(--accent) 16%, transparent); }
 #browser-bar button:disabled { opacity: .3; cursor: default; }
 #browser-address-form { flex: 1; min-width: 0; }
-#browser-address { width: 100%; height: 38px; padding: 0 16px; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 22px; font: inherit; outline: none; }
+#browser-address { width: 100%; height: 46px; padding: 0 18px; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 14px; font: inherit; outline: none; box-shadow: 0 4px 12px color-mix(in srgb, var(--bg) 18%, transparent); }
 #browser-address:focus { border-color: var(--accent); }
 #home { padding-top: 76px; }
-#view { top: 56px; }
+#view { top: 74px; }
 #home-btn { display: none; }
-.fullpage { top: 70px; }
+.fullpage { top: 78px; }
 body.playing-game #browser-bar { display: none; }
 body.playing-game #view { top: 0; }
 #reactive-paint { contain: strict; }
