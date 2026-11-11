@@ -83,7 +83,7 @@ async function handleRequest(event) {
 					const r = await withTimeout(scramjet.fetch(event), 30000);
 					if (!r || r.status === 0 || r.type === "opaque" || r.type === "opaqueredirect") return r;
 					const dest = event.request.destination;
-					if ((r.status >= 500 || [403, 407, 429].includes(r.status)) && event.request.mode === "navigate") return routeFailure(r.status);
+					if (r.status >= 500 && event.request.mode === "navigate") return new Response("Page unavailable. Go back and try again.", { status: r.status, headers: { "Content-Type": "text/plain", "Cross-Origin-Embedder-Policy": "require-corp", "Cross-Origin-Opener-Policy": "same-origin" } });
 					const h = new Headers(r.headers);
 					h.delete("permissions-policy");
 					if (["document", "iframe", "worker", "sharedworker", "style", "script", ""].indexOf(dest) !== -1) {
@@ -96,7 +96,6 @@ async function handleRequest(event) {
 					}
 					return new Response(r.body, { status: r.status, statusText: r.statusText, headers: h });
 				} catch (e) {
-					if (event.request.mode === "navigate") return routeFailure(502);
 					return new Response("Page unavailable. Go back and try again.", {
 						status: 502,
 						headers: { "Content-Type": "text/plain", "Cross-Origin-Embedder-Policy": "require-corp", "Cross-Origin-Opener-Policy": "same-origin" },
@@ -104,7 +103,6 @@ async function handleRequest(event) {
 				}
 			}
 		} catch (e) {
-			if (event.request.mode === "navigate") return routeFailure(502);
 			return new Response("Page unavailable. Go back and try again.", {
 				status: 502,
 				headers: { "Content-Type": "text/plain", "Cross-Origin-Embedder-Policy": "require-corp", "Cross-Origin-Opener-Policy": "same-origin" },
@@ -125,9 +123,6 @@ async function handleRequest(event) {
 	return withCOI(resp, sameOrigin, isNav, isHTML);
 }
 
-function routeFailure(status) {
-	return new Response('<!doctype html><p>trying another connection…</p><script>parent.postMessage({type:"asteria-route-failed"},"*")</script>', { status, headers: { "Content-Type": "text/html; charset=utf-8", "Cross-Origin-Embedder-Policy": "require-corp", "Cross-Origin-Opener-Policy": "same-origin", "Cache-Control": "no-store" } });
-}
 self.addEventListener("fetch", (event) => {
 	event.respondWith(handleRequest(event));
 });
