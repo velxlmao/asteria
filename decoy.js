@@ -51,6 +51,7 @@
 		"keydown",
 		(e) => {
 			if (window.__bindingPanic) return;
+			if (e.target.closest?.('input, textarea, [contenteditable="true"]')) return;
 			if (e.key !== ls("asteria-panic-key", "`")) return;
 			e.preventDefault();
 			panic();

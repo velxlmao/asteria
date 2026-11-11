@@ -194,6 +194,13 @@ body.playing-game #game-fullscreen { display: grid; place-items: center; }
 .ai-pip .ai-main { padding: 14px; }
 @media(max-width:640px) { .fullpage { inset: 10px 10px 88px; border-radius: 16px; } .page-head { padding: 16px; flex-wrap: wrap; } .ai-main { padding: 14px; } }
 @media(prefers-reduced-motion:reduce) { .ai-wordmark { animation: none; } }
+.fullpage > .page-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.ai-sidebar, .ai-main { min-width: 0; min-height: 0; }
+.ai-main { grid-template-rows: auto minmax(0, 1fr) auto auto; }
+.ai-messages, #chat-messages { overscroll-behavior: contain; overflow-y: auto; }
+.ai-compose { min-width: 0; }
+.ai-compose textarea, #chat-input, #chat-name, #sj-address { user-select: text; -webkit-user-select: text; }
+@media (hover: hover) and (pointer: fine) { input, textarea, [contenteditable="true"] { cursor: text !important; } }
 @media(max-width:600px) { .ai-page.open { grid-template-columns: 130px 1fr; } .ai-sidebar, .ai-main { padding: 10px; } }
 @media (hover: hover) and (pointer: fine) {
  html, body, body * { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='7' fill='white' fill-opacity='.85'/%3E%3C/svg%3E") 12 12, auto !important; }

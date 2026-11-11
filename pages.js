@@ -427,7 +427,7 @@
 	for (const name of Object.keys(pages)) {
 		pages[name]
 			.querySelector("[data-close]")
-			.addEventListener("click", () => closeCurrent());
+			?.addEventListener("click", () => closeCurrent());
 	}
 
 	// sidebar peek: in proxy view the sidebar hides; the left edge slides it in
