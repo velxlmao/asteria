@@ -115,6 +115,6 @@ body.view-mode #sidebar.peek { transform: none; }
 @font-face { font-family: Satoshi; src: url("fonts/satoshi-bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
 #home .logo { font-family: Satoshi, sans-serif; font-style: normal; font-weight: 700; font-size: clamp(60px, 9vw, 96px); letter-spacing: -.035em; line-height: 1.2; }
 @property --wordmark-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
-#home .logo { background: conic-gradient(from var(--wordmark-angle) at 50% 50%, #7436ff, #ce45f4, #e5b5ff, #a855f7, #7436ff); background-size: 200% 200%; background-clip: text; -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent; animation: wordmark-swirl 10s linear infinite !important; }
-@keyframes wordmark-swirl { 0% { --wordmark-angle: 0deg; background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { --wordmark-angle: 360deg; background-position: 0% 50%; } }
+#home .logo { background: linear-gradient(115deg, #7436ff, #a855f7, #ce45f4, #9250f5, #7436ff); background-size: 300% 300%; background-clip: text; -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent; animation: wordmark-swirl 12s ease-in-out infinite !important; }
+@keyframes wordmark-swirl { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 @media (prefers-reduced-motion: reduce) { #home .logo { animation: none !important; } }
