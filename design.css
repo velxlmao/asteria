@@ -286,6 +286,7 @@ body.content-page #settings-overlay { top: 16px; }
 .chat-profile-settings #chat-name, .chat-profile-settings #chat-password { width: 100%; padding: 9px; }
 .chat-profile-settings .chat-header-notes { margin-top: 12px; }
 .chat-profile-settings .chat-note { font-size: 10px; }
+.chat-profile-settings .chat-note, .chat-profile-settings .chat-header-notes { display: none; }
 #chat-page .chat-head { grid-column: 2; grid-row: 1; min-height: 55px; padding: 12px 22px; flex-wrap: nowrap; }
 #chat-page .page-title { font: 700 16px Satoshi, sans-serif; color: var(--text); }
 #chat-page .chat-content { grid-column: 2; grid-row: 2; min-width: 0; padding: 0 20px 16px; gap: 8px; }
