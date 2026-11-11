@@ -18,16 +18,18 @@
 	const chatsList = element("div", "ai-chats");
 	aside.append(newChat, chatsList);
 	const main = element("main", "ai-main");
-	const heading = element("header", "", "asteria ai");
+	const heading = element("header", "ai-heading");
+	const wordmark = element("h1", "ai-wordmark", "asteria ai");
 	const share = element("button", "ai-share", "screenshare");
 	share.type = "button";
 	const floating = element("button", "ai-float", "float over tabs");
 	floating.type = "button";
 	floating.hidden = true;
-	heading.append(share, floating);
+	heading.append(wordmark, share, floating);
 	let screenStream;
 	let screenVideo;
 	let floatingWindow;
+	let choosingScreen = false;
 	function stopSharing() {
 		for (const track of screenStream?.getTracks() || []) track.stop();
 		screenStream = null;
@@ -40,10 +42,15 @@
 		status.textContent = "screenshare stopped";
 	}
 	share.addEventListener("click", async () => {
+		if (choosingScreen) return;
 		if (screenStream) return stopSharing();
 		if (!navigator.mediaDevices?.getDisplayMedia) { status.textContent = "screenshare is unavailable in this browser"; return; }
 		try {
-			screenStream = await navigator.mediaDevices.getDisplayMedia({ video: { displaySurface: "browser" }, audio: false, preferCurrentTab: false, selfBrowserSurface: "exclude", surfaceSwitching: "include" });
+			choosingScreen = true;
+			const capture = navigator.mediaDevices.getDisplayMedia({ video: { displaySurface: "browser" }, audio: false, preferCurrentTab: false, selfBrowserSurface: "exclude", surfaceSwitching: "include" });
+			const autoFloat = window.documentPictureInPicture ? openFloating() : Promise.resolve();
+			screenStream = await capture;
+			await autoFloat;
 			screenVideo = document.createElement("video");
 			screenVideo.muted = true;
 			screenVideo.srcObject = screenStream;
@@ -51,11 +58,12 @@
 			screenStream.getVideoTracks()[0].addEventListener("ended", stopSharing, { once: true });
 			share.textContent = "stop sharing";
 			page.classList.add("ai-sharing");
-			floating.hidden = !window.documentPictureInPicture;
+			floating.hidden = Boolean(floatingWindow) || !window.documentPictureInPicture;
 			status.textContent = "each question sends a screenshot to the ai provider";
-		} catch (error) { if (screenStream) stopSharing(); status.textContent = error.name === "NotAllowedError" ? "screen sharing cancelled or denied" : "could not start screenshare"; }
+		} catch (error) { stopSharing(); status.textContent = error.name === "NotAllowedError" ? "screen sharing cancelled or denied" : "could not start screenshare"; }
+		finally { choosingScreen = false; }
 	});
-	floating.addEventListener("click", async () => {
+	async function openFloating() {
 		try {
 			floatingWindow = await window.documentPictureInPicture.requestWindow({ width: 400, height: 520 });
 			const doc = floatingWindow.document;
@@ -71,7 +79,8 @@
 			floating.hidden = true;
 			floatingWindow.addEventListener("pagehide", () => { page.append(main); floatingWindow = null; floating.hidden = !screenStream; });
 		} catch { status.textContent = "could not open floating window"; }
-	});
+	}
+	floating.addEventListener("click", openFloating);
 	function screenshot() {
 		if (!screenStream) return undefined;
 		if (screenStream.getVideoTracks()[0].readyState !== "live" || !screenVideo.videoWidth) throw new Error("screen is unavailable, share the tab again");
