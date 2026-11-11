@@ -11,8 +11,8 @@
 	function draw() {
 		pending = false;
 		context.clearRect(0, 0, canvas.width, canvas.height);
-		context.fillStyle = getComputedStyle(canvas).getPropertyValue("--accent").trim();
-		context.globalAlpha = .65;
+		context.fillStyle = "rgb(199, 164, 245)";
+		context.globalAlpha = .75;
 		for (let y = 16; y < canvas.height; y += 36) for (let x = 16; x < canvas.width; x += 36) {
 			let offsetX = 0, offsetY = 0;
 			if (pointer && !reduced.matches) {
