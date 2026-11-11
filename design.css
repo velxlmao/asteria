@@ -276,6 +276,33 @@ body.content-page #settings-overlay { top: 16px; }
 ::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
 ::-webkit-scrollbar-corner { background: transparent; }
 #nav-ai svg { width: 23px; height: 23px; }
+.ai-main { position: relative; grid-template-rows: auto minmax(0, 1fr) auto auto; }
+.ai-heading { padding: 0 0 16px; justify-content: flex-start; }
+.ai-wordmark { width: auto; margin-right: auto; text-align: left; font-size: 23px; animation: wordmark-swirl 12s ease-in-out infinite; }
+.ai-main header .ai-share { margin-left: auto; }
+.ai-welcome { align-self: end; text-align: center; padding-bottom: 28px; }
+.ai-welcome h2 { margin: 0; font: 700 clamp(28px, 4vw, 40px)/1.25 Satoshi, sans-serif; letter-spacing: -.035em; color: var(--text); }
+.ai-main:not(.has-messages) { grid-template-rows: auto minmax(0, 1fr) auto auto minmax(0, 1fr); }
+.ai-main:not(.has-messages) .ai-messages { display: none; }
+.ai-main:not(.has-messages) .ai-status { grid-row: 4; margin-top: 12px; }
+.ai-main:not(.has-messages) .ai-compose { grid-row: 3; }
+.ai-compose { max-width: 760px; border-radius: 24px; padding: 10px; align-items: flex-end; }
+.ai-compose textarea { height: 74px; }
+.ai-compose button { align-self: flex-end; margin-bottom: 4px; border-radius: 18px; }
+.ai-messages { width: 100%; max-width: 800px; margin: 0 auto; }
+.ai-message { margin-bottom: 24px; padding: 10px 8px; }
+.ai-message.user { width: fit-content; max-width: 85%; margin-left: auto; padding: 12px 18px; border-radius: 20px; }
+.ai-message.user strong { display: none; }
+.ai-message.user p { margin-top: 0; }
+.ai-sidebar { padding: 20px 12px; }
+.ai-sidebar > button { width: 100%; text-align: left; padding: 12px; }
+.ai-chats { margin-top: 24px; }
+.ai-chat-row button { border-color: transparent; background: transparent; }
+.ai-chat-row button:first-child { padding: 11px 10px; }
+.ai-sharing .ai-main, .ai-pip .ai-main { grid-template-rows: auto minmax(0, 1fr) auto auto; }
+.ai-sharing .ai-welcome, .ai-pip .ai-welcome { align-self: center; padding: 18px 0; }
+.ai-sharing .ai-welcome h2, .ai-pip .ai-welcome h2 { font-size: 24px; }
+.ai-sharing .ai-wordmark, .ai-pip .ai-wordmark { font-size: 20px; }
 #chat-page.open { display: grid; grid-template-columns: 240px minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
 .chat-channel-sidebar { grid-column: 1; grid-row: 1 / 3; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; padding: 20px 12px 12px; border-right: 1px solid var(--border); background: color-mix(in srgb, var(--surface) 25%, transparent); }
 .chat-channel-sidebar h2 { padding: 0 10px 22px; font: 700 23px Satoshi, sans-serif; }

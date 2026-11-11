@@ -104,6 +104,9 @@
 		return canvas.toDataURL("image/jpeg", .78);
 	}
 	const messages = element("div", "ai-messages");
+	const welcome = element("section", "ai-welcome");
+	const greeting = element("h2", "", "what can i help with?");
+	welcome.append(greeting);
 	const form = element("form", "ai-compose");
 	const input = element("textarea", "");
 	input.placeholder = "message";
@@ -115,7 +118,7 @@
 	const status = element("p", "ai-status");
 	status.setAttribute("role", "status");
 	form.append(input, send);
-	main.append(heading, messages, status, form);
+	main.append(heading, welcome, messages, status, form);
 	page.append(aside, main);
 	document.body.append(page);
 	let chats;
@@ -125,6 +128,9 @@
 	let busy = false;
 	function save() { localStorage.setItem("asteria-ai-chats", JSON.stringify(chats)); }
 	function render() {
+		const hasMessages = Boolean(current?.messages.length);
+		main.classList.toggle("has-messages", hasMessages);
+		welcome.hidden = hasMessages;
 		messages.replaceChildren();
 		chatsList.replaceChildren();
 		for (const chat of chats) {
