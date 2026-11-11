@@ -16,6 +16,13 @@
  let socket, reconnect, retry = 0, ownId = '', visible = false, ready = false, pending = '', sentAt = 0;
  let owner = false, ttlSeconds = 0, clockOffset = 0, moderating = false, moderationTimer;
  const messages = new Map();
+ const sentMessageIds = new Set();
+ try { for (const id of JSON.parse(localStorage.getItem('asteria-sent-message-ids') || '[]')) sentMessageIds.add(id); } catch {}
+ function rememberSent(message) {
+  sentMessageIds.add(message.id);
+  while (sentMessageIds.size > 500) sentMessageIds.delete(sentMessageIds.values().next().value);
+  try { localStorage.setItem('asteria-sent-message-ids', JSON.stringify([...sentMessageIds])); } catch {}
+ }
  try { name.value = localStorage.getItem('asteria-chat-name') || ''; } catch {}
  function send(data) { socket.send(JSON.stringify({ ...data, token: browserToken })); }
  function passwordPrompt() {
@@ -52,7 +59,7 @@
    const row = document.createElement('article'); row.className = 'chat-message';
    const grouped = previous && previous.authorId === message.authorId && previous.name === message.name && message.time - previous.time < 300000 && new Date(previous.time).toDateString() === new Date(message.time).toDateString();
    if (grouped) row.classList.add('grouped');
-   if (message.authorId === ownId) row.classList.add('own');
+   if (message.authorId === ownId || sentMessageIds.has(message.id) || owner && message.owner === true) row.classList.add('own');
    const heading = document.createElement('header'), author = document.createElement('strong'), time = document.createElement('time'), text = document.createElement('p');
    author.textContent = message.name; time.dateTime = new Date(message.time).toISOString(); time.textContent = new Date(message.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
    text.textContent = message.text; heading.append(author);
@@ -126,6 +133,7 @@
     if (data.type === 'announcement') window.dispatchEvent(new CustomEvent('velx-announcements', { detail: data.announcement ? [data.announcement] : [] }));
     if (data.type === 'announcement-sent' || data.type === 'announcement-cleared') window.dispatchEvent(new CustomEvent('velx-announcement-sent', { detail: data.type }));
     if (data.type === 'message') {
+     if (data.message.authorId === ownId) rememberSent(data.message);
      if (!messages.has(data.message.id) && data.message.authorId !== ownId) window.dispatchEvent(new CustomEvent('velx-chat-notification', { detail: data.message }));
      messages.set(data.message.id, data.message);
      while (messages.size > 100) messages.delete(messages.keys().next().value);
