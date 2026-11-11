@@ -107,3 +107,5 @@ body.view-mode #sidebar.peek { transform: none; }
 @media (prefers-reduced-motion: reduce) { .rotating-caption, .caption-copy { animation: none; } .rotating-caption { opacity: .55; } }
 
 .rotating-caption.caption-changing { opacity: 0; }
+
+#sidebar, #sidebar-edge, #rain, #cursor-glow, #welcome { display: none !important; }
