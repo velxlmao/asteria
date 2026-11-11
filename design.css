@@ -124,7 +124,7 @@ body.view-mode #sidebar.peek { transform: none; }
 #dot-matrix { background-image: none; }
 #dot-matrix::after { display: none; }
 #dot-matrix i { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: var(--accent); opacity: .13; transition: translate .45s ease-out; }
-#reactive-paint { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: .65; }
+#reactive-paint { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: .8; filter: blur(12px); }
 body.view-mode #reactive-paint { display: none; }
 body.view-mode #dot-matrix { display: none; }
 @media (prefers-reduced-motion: reduce) { #dot-matrix::after { display: none; } }

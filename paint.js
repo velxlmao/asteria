@@ -28,9 +28,9 @@
 			particle.y += (Math.sin(particle.angle) * .7 + particle.vy) * elapsed;
 			particle.vx *= .96;
 			particle.vy *= .96;
-			const radius = 24 + (1 - particle.life) * 26;
+			const radius = 38 + (1 - particle.life) * 30;
 			const gradient = context.createRadialGradient(particle.x, particle.y, 0, particle.x, particle.y, radius);
-			gradient.addColorStop(0, `hsla(${particle.hue}, 85%, 58%, ${particle.life * .1})`);
+			gradient.addColorStop(0, `hsla(${particle.hue}, 85%, 58%, ${particle.life * .15})`);
 			gradient.addColorStop(1, "transparent");
 			context.fillStyle = gradient;
 			context.fillRect(particle.x - radius, particle.y - radius, radius * 2, radius * 2);
@@ -43,9 +43,12 @@
 		const y = event.clientY / 2;
 		const dx = lastPointer ? x - lastPointer.x : 0;
 		const dy = lastPointer ? y - lastPointer.y : 0;
+		const steps = Math.min(32, Math.max(1, Math.ceil(Math.hypot(dx, dy) / 5)));
+		for (let step = 1; step <= steps; step++) {
+			particles.push({ x: x - dx + dx * step / steps, y: y - dy + dy * step / steps, vx: Math.max(-3, Math.min(3, dx * .12)), vy: Math.max(-3, Math.min(3, dy * .12)), angle: Math.atan2(dy, dx) + Math.PI / 2, hue: 280, life: 1 });
+		}
 		lastPointer = { x, y };
-		particles.push({ x, y, vx: Math.max(-3, Math.min(3, dx * .12)), vy: Math.max(-3, Math.min(3, dy * .12)), angle: Math.atan2(dy, dx) + Math.PI / 2, hue: 270 + Math.random() * 25, life: 1 });
-		if (particles.length > 80) particles.shift();
+		if (particles.length > 180) particles.splice(0, particles.length - 180);
 		if (!frame) { lastTime = performance.now(); frame = requestAnimationFrame(draw); }
 	}, { passive: true });
 	document.documentElement.addEventListener("pointerleave", () => { lastPointer = undefined; });
