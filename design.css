@@ -112,4 +112,5 @@ body.view-mode #sidebar.peek { transform: none; }
 #home { padding-left: calc(var(--sp) * 2); }
 #startup, #loader, #game-loader { display: none !important; }
 @font-face { font-family: "Instrument Serif"; src: url("fonts/wordmark-serif.ttf") format("truetype"); font-weight: 400; font-style: italic; font-display: swap; }
-#home .logo { font-family: "Instrument Serif", serif; font-style: italic; font-weight: 400; font-size: clamp(68px, 10vw, 108px); font-stretch: expanded; letter-spacing: .045em; line-height: 1.2; display: inline-block; scale: 1.15 1; }
+@font-face { font-family: Satoshi; src: url("fonts/satoshi-bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+#home .logo { font-family: Satoshi, sans-serif; font-style: normal; font-weight: 700; font-size: clamp(60px, 9vw, 96px); letter-spacing: -.035em; line-height: 1.2; }
