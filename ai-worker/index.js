@@ -21,7 +21,7 @@ export default {
 			}
 			const response = await fetch("https://api.dawvq.com/v1/chat/completions", {
 				method: "POST", headers: { authorization: "Bearer " + env.AI_KEY, "content-type": "application/json" },
-				body: JSON.stringify({ model: "deepseek-v4-pro", messages, max_tokens: 2048, stream: body.stream === true }), signal: AbortSignal.timeout(90000),
+				body: JSON.stringify({ model: "deepseek-v4.1-flash", messages, max_tokens: 2048, stream: body.stream === true }), signal: AbortSignal.timeout(90000),
 			});
 			if (!response.ok) return json({ error: "ai provider unavailable, try again" }, 502);
 			if (body.stream === true && response.headers.get("content-type")?.includes("text/event-stream")) return new Response(response.body, { headers: { ...headers, "content-type": "text/event-stream", "cache-control": "no-cache, no-transform" } });
