@@ -84,7 +84,7 @@
 		{ name: "Wrestle Bros", url: "https://wrestlebros.io/", img: "games/bros/wrestle.png" },
 		{ name: "Kart Bros", url: "https://kartbros.io/", img: "games/bros/kart.jpg" },
 		{ name: "Karate Bros", url: "https://karatebros.io/", img: "games/bros/karate.png" },
-		{ name: "Bike Bros", url: "https://bikebros.io/", img: "games/bros/bike.png" },
+		{ name: "Bike Bros", url: "https://bikebros.io/", img: "games/bros/bike.png", local: true, splash: "load", isolated: true },
 		{ name: "Boom Bros", url: "https://boombros.io/", img: "games/bros/boom.jpg" },
 		{ name: "Plague Inc.", url: "games/wasm-plague/index.html", img: "games/plague-inc.png", local: true, splash: "load" },
 		{ name: "Among Us (Legacy)", url: "games/wasm-among-legacy/index.html", img: "games/among-us.webp", local: true, splash: "load" },
@@ -243,9 +243,15 @@
 		if (prev) prev.remove();
 		const f = document.createElement("iframe");
 		f.id = "sj-local";
+		if (g?.isolated) {
+			if (new URL(url, location.href).origin === location.origin) throw new Error("isolated games require a separate origin");
+			f.credentialless = true;
+			f.setAttribute("sandbox", "allow-scripts allow-same-origin allow-pointer-lock");
+		}
 		// cloud games need autoplay/fullscreen/gamepad unlocked in the frame
 		f.allow =
 			"autoplay; fullscreen; picture-in-picture; gamepad; microphone; camera; display-capture; keyboard-lock; cross-origin-isolated";
+		if (g?.isolated) f.allow = "autoplay; fullscreen; gamepad";
 		f.setAttribute("allowfullscreen", "");
 		const splashMode = (g && g.splash) || "ready";
 		let retries = 0;

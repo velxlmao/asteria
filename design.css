@@ -165,10 +165,11 @@ body.view-mode #sidebar, body.view-mode #sidebar.peek { transform: translateX(-5
 .ai-pip .ai-main { height: 100vh; padding: 14px; background: var(--bg); color: var(--text); }
 .ai-pip button { padding: 8px; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 7px; cursor: pointer; }
 .ai-pip button:disabled { opacity: .5; }
-#game-dock-zone { display: none; position: fixed; z-index: 3; bottom: 0; left: 50%; translate: -50% 0; width: min(380px, 100vw); height: 80px; }
+#game-dock-zone { display: none; position: fixed; z-index: 26; bottom: 0; left: 0; width: 100vw; height: 1px; }
 body.playing-game #game-dock-zone { display: block; }
-body.playing-game #sidebar { transform: translate(-50%, calc(100% + 20px)); opacity: 0; transition: transform .2s ease, opacity .2s ease; }
-body.playing-game:has(#game-dock-zone:hover) #sidebar, body.playing-game #sidebar:hover, body.playing-game #sidebar:focus-within { transform: translateX(-50%); opacity: 1; }
+body.playing-game #sidebar { transform: translate(-50%, calc(100% + 20px)); opacity: 0; pointer-events: none; transition: transform .2s ease, opacity .2s ease; }
+body.playing-game:has(#game-dock-zone:hover) #sidebar, body.playing-game #sidebar:hover, body.playing-game #sidebar:focus-within { transform: translateX(-50%); opacity: 1; pointer-events: auto; }
+body.playing-game #sidebar::before { content: ""; position: absolute; top: 100%; left: 0; right: 0; height: 16px; }
 #game-fullscreen { display: none; position: absolute; top: 12px; right: 12px; z-index: 30; width: 38px; height: 38px; color: var(--text); background: color-mix(in srgb, var(--surface) 70%, transparent); border: 1px solid var(--border); border-radius: 9px; font-size: 25px; cursor: pointer; backdrop-filter: blur(10px); }
 body.playing-game #game-fullscreen { display: grid; place-items: center; }
 #game-fullscreen { padding: 0; line-height: 1; }
@@ -250,10 +251,10 @@ body.view-mode #home-clock { display: none; }
 #view { top: 60px; }
 #home-btn { display: none; }
 .fullpage { top: 64px; }
-body.view-mode #browser-bar { display: flex; transform: translateY(-66px); opacity: 0; transition: transform .16s ease, opacity .16s ease; }
-#browser-top-edge { display: none; position: fixed; top: 0; left: 0; right: 0; height: 14px; z-index: 26; }
+body.view-mode #browser-bar { display: flex; transform: translateY(-66px); opacity: 0; visibility: hidden; transition: transform .16s ease, opacity .16s ease, visibility .16s; }
+#browser-top-edge { display: none; position: fixed; top: 0; left: 0; right: 0; height: 1px; z-index: 26; }
 body.view-mode #browser-top-edge { display: block; }
-body.view-mode:has(#browser-top-edge:hover) #browser-bar, body.view-mode #browser-bar:hover, body.view-mode #browser-bar:focus-within { transform: translateY(0); opacity: 1; }
+body.view-mode:has(#browser-top-edge:hover) #browser-bar, body.view-mode #browser-bar:hover, body.view-mode #browser-bar:focus-within { transform: translateY(0); opacity: 1; visibility: visible; }
 body.view-mode #browser-bar::before { content: ""; position: absolute; inset: -12px -16px; z-index: -1; pointer-events: auto; }
 body.view-mode #browser-bar button, body.view-mode #browser-address { background: color-mix(in srgb, var(--bg) 94%, transparent); border-color: color-mix(in srgb, var(--text) 30%, transparent); }
 body.view-mode #view { top: 0; }
