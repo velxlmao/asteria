@@ -1,0 +1,17 @@
+{
+  "localized": 503,
+  "failed": [
+    {
+      "name": "Minecraft 1.8.8",
+      "error": "HTML exceeds local loader size limit"
+    },
+    {
+      "name": "Minecraft Alpha 1.2.6",
+      "error": "HTML exceeds local loader size limit"
+    },
+    {
+      "name": "Minecraft Beta 1.7.3",
+      "error": "HTML exceeds local loader size limit"
+    }
+  ]
+}

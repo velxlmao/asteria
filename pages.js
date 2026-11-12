@@ -217,6 +217,7 @@
 	});
 
 	function launchLocal(url, g) {
+		document.body.classList.remove("content-page");
 		// self-hosted game: load it directly (no proxy), same origin
 		showGameLoader();
 		hideModBtn();
@@ -457,7 +458,7 @@
 	fullscreen.addEventListener("click", async () => {
 		try {
 			if (document.fullscreenElement) await document.exitFullscreen();
-			else await document.getElementById("view").requestFullscreen();
+			else await document.getElementById("app").requestFullscreen();
 		} catch { fullscreen.title = "fullscreen unavailable in this browser"; }
 	});
 	document.getElementById("home-btn").addEventListener("click", () => document.body.classList.remove("playing-game"));
