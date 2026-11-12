@@ -77,15 +77,15 @@
 
 	// ---- catalogues ----
 	const GAMES = [
-		{ name: "Football Bros", url: "https://footballbros.io/", img: "games/bros/football.png", external: true },
-		{ name: "Basket Bros", url: "https://basketbros.io/", img: "games/bros/basket.jpg", external: true },
-		{ name: "Baseball Bros", url: "https://baseballbros.io/", img: "games/bros/baseball.png", external: true },
-		{ name: "Soccer Bros", url: "https://soccerbros.gg/", img: "games/bros/soccer.jpg", external: true },
-		{ name: "Wrestle Bros", url: "https://wrestlebros.io/", img: "games/bros/wrestle.png", external: true },
-		{ name: "Kart Bros", url: "https://kartbros.io/", img: "games/bros/kart.jpg", external: true },
-		{ name: "Karate Bros", url: "https://karatebros.io/", img: "games/bros/karate.png", external: true },
-		{ name: "Bike Bros", url: "https://bikebros.io/", img: "games/bros/bike.png", external: true },
-		{ name: "Boom Bros", url: "https://boombros.io/", img: "games/bros/boom.jpg", external: true },
+		{ name: "Football Bros", url: "https://footballbros.io/", img: "games/bros/football.png" },
+		{ name: "Basket Bros", url: "https://basketbros.io/", img: "games/bros/basket.jpg" },
+		{ name: "Baseball Bros", url: "https://baseballbros.io/", img: "games/bros/baseball.png" },
+		{ name: "Soccer Bros", url: "https://soccerbros.gg/", img: "games/bros/soccer.jpg" },
+		{ name: "Wrestle Bros", url: "https://wrestlebros.io/", img: "games/bros/wrestle.png" },
+		{ name: "Kart Bros", url: "https://kartbros.io/", img: "games/bros/kart.jpg" },
+		{ name: "Karate Bros", url: "https://karatebros.io/", img: "games/bros/karate.png" },
+		{ name: "Bike Bros", url: "https://bikebros.io/", img: "games/bros/bike.png" },
+		{ name: "Boom Bros", url: "https://boombros.io/", img: "games/bros/boom.jpg" },
 		{ name: "Plague Inc.", url: "games/wasm-plague/index.html", img: "games/plague-inc.png", local: true, splash: "load" },
 		{ name: "Among Us (Legacy)", url: "games/wasm-among-legacy/index.html", img: "games/among-us.webp", local: true, splash: "load" },
 		{ name: "Among Us (2026)", url: "games/wasm-among-new/index.html", img: "games/among-us.webp", local: true, splash: "load" },
@@ -412,15 +412,9 @@
 		const filtered = list.filter(item => item.name.toLowerCase().includes(query));
 		if (pageEl === pages.games) document.getElementById("game-count").textContent = (query ? filtered.length + " / " : "") + list.length + " games";
 		for (const item of filtered) {
-			const tile = document.createElement(item.external ? "a" : "button");
+			const tile = document.createElement("button");
 			tile.className = "game-tile";
 			tile.title = item.name;
-			if (item.external) {
-				tile.href = item.url;
-				tile.target = "_blank";
-				tile.rel = "noopener noreferrer";
-				tile.setAttribute("aria-label", item.name + " (opens official site in a new tab)");
-			}
 
 			const thumb = document.createElement("div");
 			thumb.className = "game-thumb";
@@ -443,7 +437,7 @@
 
 			tile.appendChild(thumb);
 			tile.appendChild(name);
-			if (!item.external) tile.addEventListener("click", () => launch(item.url, item));
+			tile.addEventListener("click", () => launch(item.url, item));
 			grid.appendChild(tile);
 		}
 	}
