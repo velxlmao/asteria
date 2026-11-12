@@ -60,6 +60,7 @@
 			navs[name].classList.add("active");
 			current = name;
 			if (name === "chat") window.dispatchEvent(new Event("velx-chat-open"));
+			if (name === "ai") window.dispatchEvent(new Event("asteria-ai-open"));
 		};
 		if (current) hide(pages[current], navs[current], show);
 		else show();

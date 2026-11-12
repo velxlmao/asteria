@@ -1,0 +1,15 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const source = fs.readFileSync('ai.js', 'utf8');
+const show = source.match(/function showTerms\(\) \{[^\n]+\}/)[0];
+const context = vm.createContext({ termsAccepted: false, terms: { open: false, calls: 0, showModal() { this.open = true; this.calls++; } } });
+vm.runInContext(show + '; showTerms(); showTerms();', context);
+assert.equal(context.terms.calls, 1);
+vm.runInContext('terms.open = false; termsAccepted = true; showTerms();', context);
+assert.equal(context.terms.calls, 1);
+vm.runInContext('termsAccepted = false; showTerms();', context);
+assert.equal(context.terms.calls, 2);
+assert.match(source, /if \(!termsAccepted\) \{ showTerms\(\); return; \}/);
+assert.match(fs.readFileSync('pages.js', 'utf8'), /if \(name === "ai"\) window.dispatchEvent\(new Event\("asteria-ai-open"\)\)/);
+console.log('ai notice checks passed');

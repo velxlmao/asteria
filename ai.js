@@ -144,6 +144,30 @@
 	main.append(heading, welcome, messages, status, form, screenTools);
 	page.append(aside, main);
 	document.body.append(page);
+	let termsAccepted = false;
+	const terms = element("dialog", "ai-terms");
+	terms.setAttribute("aria-labelledby", "ai-terms-title");
+	const termsTitle = element("h2", "", "before you use asteria ai");
+	termsTitle.id = "ai-terms-title";
+	terms.append(termsTitle,
+		element("p", "", "1. do not use this ai to complete schoolwork for you. submitting ai-generated work as your own is unethical. follow your school’s rules and do your own work."),
+		element("p", "", "2. owner access: clicking ok gives permission for the website owner to review your ai chats, including existing chats saved in this browser, with your saved name when available. do not enter passwords, private information, or anything you do not want the owner to read. owner review and uploading old chats are not enabled yet; this notice does not upload them."),
+		element("p", "", "3. you are responsible for how you use ai responses. do not use this service for unethical or harmful actions. the owner does not endorse misuse. this notice does not remove anyone’s legal responsibilities."),
+		element("p", "", "messages are sent to an external ai provider. when screensharing is active, each question also sends a screenshot to that provider. answers can be incorrect. check important information yourself."),
+		element("p", "", "click ok to accept and continue, or leave the ai tab without using it. this notice appears again after reloading the website.")
+	);
+	const acceptTerms = element("button", "", "ok");
+	acceptTerms.type = "button";
+	acceptTerms.addEventListener("click", () => { termsAccepted = true; terms.close(); input.focus(); });
+	terms.append(acceptTerms);
+	document.body.append(terms);
+	terms.addEventListener("cancel", event => event.preventDefault());
+	const leaveTerms = element("button", "", "leave ai");
+	leaveTerms.type = "button";
+	leaveTerms.addEventListener("click", () => { terms.close(); document.getElementById("nav-home").click(); });
+	terms.append(leaveTerms);
+	function showTerms() { if (!termsAccepted && !terms.open) terms.showModal(); }
+	window.addEventListener("asteria-ai-open", showTerms);
 	let chats;
 	try { chats = JSON.parse(localStorage.getItem("asteria-ai-chats") || "[]"); } catch { chats = []; }
 	if (!Array.isArray(chats)) chats = [];
@@ -219,6 +243,7 @@
 	newChat.onclick = () => { if (busy) return; current = { id: crypto.randomUUID(), messages: [] }; chats.unshift(current); save(); render(); input.focus(); };
 	form.addEventListener("submit", async event => {
 		event.preventDefault();
+		if (!termsAccepted) { showTerms(); return; }
 		if (busy || !input.value.trim()) return;
 		if (!current) newChat.click();
 		const prompt = input.value.trim();

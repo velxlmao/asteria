@@ -388,3 +388,9 @@ body.view-mode #dot-matrix { display: none; }
 .settings-category .setting.row { flex-wrap: wrap; gap: 12px; }
 @media (max-width: 600px) { .separate-page #settings-overlay { inset: 10px 8px 88px; padding: 0; } .separate-page #settings-panel { --settings-size: min(calc(100vw - 16px), calc(100dvh - 110px)); grid-template-columns: 130px minmax(0, 1fr); } .settings-categories { padding: 20px 8px; } .settings-categories .panel-title { margin: 0 4px 24px; font-size: 19px; } .settings-content { padding: 24px 14px; } }
 @media (prefers-reduced-motion: reduce) { #dot-matrix::after { display: none; } }
+.ai-terms { box-sizing: border-box; width: min(620px, calc(100vw - 32px)); max-height: calc(100dvh - 48px); overflow-y: auto; padding: 28px; color: var(--text); background: color-mix(in srgb, var(--surface) 82%, transparent); border: 1px solid var(--border); border-radius: 18px; backdrop-filter: blur(24px); }
+.ai-terms::backdrop { background: color-mix(in srgb, var(--bg) 65%, transparent); backdrop-filter: blur(6px); }
+.ai-terms h2 { margin: 0 0 20px; font-size: 24px; }
+.ai-terms p { line-height: 1.65; margin: 0 0 16px; }
+.ai-terms button { padding: 10px 20px; margin-right: 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); cursor: pointer; }
+.ai-terms button:hover { border-color: var(--accent); }
