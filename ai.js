@@ -150,6 +150,47 @@
 	let current = chats[0];
 	let busy = false;
 	function save() { localStorage.setItem("asteria-ai-chats", JSON.stringify(chats)); }
+	async function readReply(response, onText) {
+		if (!response.ok) {
+			const data = await response.json();
+			throw new Error(data.error || "request failed");
+		}
+		if (!response.headers.get("content-type")?.includes("text/event-stream")) {
+			const data = await response.json();
+			if (!data.content) throw new Error("empty response, try again");
+			onText(data.content);
+			return;
+		}
+		const reader = response.body.getReader();
+		const decoder = new TextDecoder();
+		let buffer = "";
+		let eventData = [];
+		let complete = false;
+		function consume(line) {
+			if (line.startsWith("data:")) eventData.push(line.slice(5).trimStart());
+			if (line || !eventData.length) return;
+			const payload = eventData.join("\n");
+			eventData = [];
+			if (payload === "[DONE]") { complete = true; return; }
+			const data = JSON.parse(payload);
+			if (data.error) throw new Error("ai provider interrupted the response");
+			const text = data.choices?.[0]?.delta?.content;
+			if (typeof text === "string" && text) onText(text);
+		}
+		try {
+			while (!complete) {
+				const { value, done } = await reader.read();
+				buffer += decoder.decode(value, { stream: !done });
+				let newline;
+				while ((newline = buffer.indexOf("\n")) !== -1) {
+					consume(buffer.slice(0, newline).replace(/\r$/, ""));
+					buffer = buffer.slice(newline + 1);
+				}
+				if (done) { consume(buffer.replace(/\r$/, "")); consume(""); break; }
+			}
+			if (!complete) throw new Error("response interrupted, try again");
+		} finally { await reader.cancel().catch(() => {}); reader.releaseLock(); }
+	}
 	function render() {
 		const hasMessages = Boolean(current?.messages.length);
 		main.classList.toggle("has-messages", hasMessages);
@@ -170,7 +211,7 @@
 		}
 		for (const message of current?.messages || []) {
 			const row = element("article", "ai-message " + message.role);
-			row.append(element("strong", "", message.role === "user" ? "you" : "asteria ai"), element("p", "", message.content));
+			row.append(element("strong", "", message.role === "user" ? "you" : "asteria ai"), element("p", "", message.content || (busy && message.role === "assistant" ? "thinking..." : "")));
 			messages.append(row);
 		}
 		messages.scrollTop = messages.scrollHeight;
@@ -183,19 +224,30 @@
 		const prompt = input.value.trim();
 		const history = [...current.messages.slice(-38), { role: "user", content: prompt }];
 		current.messages.push({ role: "user", content: prompt });
+		const answer = { role: "assistant", content: "" };
+		current.messages.push(answer);
 		input.value = "";
 		busy = true;
 		send.disabled = newChat.disabled = true;
-		status.textContent = "thinking…";
+		status.textContent = "thinking...";
 		render();
+		const answerText = messages.lastElementChild.querySelector("p");
 		try {
 			const image = screenshot();
-			const response = await fetch("https://asteria-ai.realdashvr.workers.dev/", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ messages: history, image }), signal: AbortSignal.timeout(95000) });
-			const data = await response.json();
-			if (!response.ok) throw new Error(data.error || "request failed");
-			current.messages.push({ role: "assistant", content: data.content });
+			const response = await fetch("https://asteria-ai.realdashvr.workers.dev/", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ messages: history, image, stream: true }), signal: AbortSignal.timeout(95000) });
+			await readReply(response, text => {
+				const nearBottom = messages.scrollHeight - messages.scrollTop - messages.clientHeight < 100;
+				answer.content += text;
+				answerText.textContent = answer.content;
+				status.textContent = "";
+				if (nearBottom) messages.scrollTop = messages.scrollHeight;
+			});
+			if (!answer.content) throw new Error("empty response, try again");
 			status.textContent = "";
-		} catch (error) { current.messages.pop(); input.value = prompt; status.textContent = error.message; }
+		} catch (error) {
+			if (!answer.content) { current.messages.splice(-2); input.value = prompt; }
+			status.textContent = error.message;
+		}
 		finally { busy = false; send.disabled = newChat.disabled = false; save(); render(); }
 	});
 	input.addEventListener("keydown", event => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); form.requestSubmit(); } });
