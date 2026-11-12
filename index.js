@@ -93,6 +93,7 @@ function finishNavigation(ok) {
 
 form.addEventListener("submit", async (event) => {
 	event.preventDefault();
+	document.body.classList.remove("content-page");
 	error.textContent = "";
 	errorCode.textContent = "";
 

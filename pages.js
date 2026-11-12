@@ -150,6 +150,9 @@
 		},
 	];
 	const APPS = [
+		{ name: "Spotify", url: "https://open.spotify.com/", img: "apps/spotify.png" },
+		{ name: "SoundCloud", url: "https://soundcloud.com/", img: "apps/soundcloud.png" },
+		{ name: "Photopea", url: "https://www.photopea.com/", img: "apps/photopea.png" },
 		{ name: "TikTok", url: "https://www.tiktok.com/", img: "shortcuts/tiktok.svg", icon: true },
 		{ name: "Instagram", url: "https://www.instagram.com/", img: "shortcuts/instagram.svg", icon: true },
 		{
