@@ -361,9 +361,9 @@ body.content-page #settings-overlay { top: 16px; }
 }
 body.view-mode #dot-matrix { display: none; }
 .separate-page #settings-overlay { inset: 16px 24px 94px; display: grid; place-items: center; padding: 12px; background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; animation: none; }
-.separate-page #settings-panel { display: grid; grid-template-columns: 190px minmax(0, 1fr); --settings-size: min(900px, calc(100vw - 72px), calc(100dvh - 130px)); width: var(--settings-size); height: var(--settings-size); aspect-ratio: 1; min-height: 0; max-height: none; padding: 0; margin: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 18px; background: color-mix(in srgb, var(--surface) 65%, transparent); box-shadow: none; }
+.separate-page #settings-panel { display: grid; grid-template-columns: 190px minmax(0, 1fr); --settings-size: min(900px, calc(100vw - 72px), calc(100dvh - 130px)); width: var(--settings-size); height: var(--settings-size); aspect-ratio: 1; min-height: 0; max-height: none; padding: 0; margin: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 18px; background: color-mix(in srgb, var(--surface) 22%, transparent); box-shadow: none; }
 #settings-close { display: none; }
-.settings-categories { display: flex; flex-direction: column; gap: 6px; padding: 24px 12px; border-right: 1px solid var(--border); background: color-mix(in srgb, var(--surface) 35%, transparent); }
+.settings-categories { display: flex; flex-direction: column; gap: 6px; padding: 24px 12px; border-right: 1px solid var(--border); background: color-mix(in srgb, var(--surface) 12%, transparent); }
 .settings-categories .panel-title { margin: 0 12px 24px; font-size: 22px; }
 .settings-categories button { padding: 12px; text-align: left; font: inherit; color: var(--muted); background: transparent; border: 0; border-radius: 10px; cursor: pointer; }
 .settings-categories button:hover { color: var(--text); background: color-mix(in srgb, var(--text) 6%, transparent); }
