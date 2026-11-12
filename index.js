@@ -6,6 +6,16 @@ const searchEngine = document.getElementById("sj-search-engine");
 const error = document.getElementById("sj-error");
 const errorCode = document.getElementById("sj-error-code");
 const home = document.getElementById("home");
+const homeClock = document.getElementById("home-clock");
+const clockFormat = new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" });
+function updateHomeClock() {
+	const now = new Date();
+	homeClock.dateTime = now.toISOString();
+	const time = clockFormat.format(now);
+	if (homeClock.textContent !== time) homeClock.textContent = time;
+}
+updateHomeClock();
+setInterval(updateHomeClock, 1000);
 const view = document.getElementById("view");
 const homeBtn = document.getElementById("home-btn");
 const loader = document.getElementById("loader");
