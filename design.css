@@ -36,8 +36,11 @@ button:disabled { cursor: not-allowed; opacity: .5; }
 .tile-grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: calc(var(--sp) * 1.5); }
 .game-tile { min-width: 0; padding: calc(var(--sp) / 2); gap: var(--sp); border: 1px solid var(--border); border-radius: calc(var(--radius) * 1.5); background: var(--surface); transition: border-color .2s, transform .2s; }
 .game-thumb { border-radius: var(--radius); border: 0; }
+.game-thumb { overflow: hidden; }
+.game-thumb img { display: block; width: 100%; height: 100%; aspect-ratio: 1; object-fit: cover; }
 .game-thumb.app-icon { background-color: var(--text); mask-size: 45%; mask-repeat: no-repeat; mask-position: center; }
 .game-name { text-align: left; padding: 0 calc(var(--sp) / 2) calc(var(--sp) / 2); font-size: 13px; line-height: 1.5; font-weight: 600; overflow-wrap: anywhere; }
+#game-count { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
 .game-tile:hover { border-color: var(--accent); transform: translateY(-3px); }
 .game-tile:hover .game-thumb { transform: none; box-shadow: none; }
 .game-search { padding: var(--sp); border-radius: var(--radius); }

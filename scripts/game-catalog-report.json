@@ -1,0 +1,449 @@
+{
+  "checkedAt": "2026-11-12T00:31:08.508Z",
+  "checked": 580,
+  "accepted": 506,
+  "checks": "entry page, cover, and first three external scripts or frames, not gameplay",
+  "rejected": [
+    {
+      "name": "Stacky Dash",
+      "url": "https://gn-math.github.io/html/18-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/18.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Mob Control HTML5",
+      "url": "https://gn-math.github.io/html/22-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/22.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Vex 6",
+      "url": "https://gn-math.github.io/html/51-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/51.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Vex 7",
+      "url": "https://gn-math.github.io/html/52-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/52.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Angry Birds",
+      "url": "https://gn-math.github.io/html/63-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/63.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Baldi's Basics",
+      "url": "https://gn-math.github.io/html/65-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/65.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Bob The Robber 2",
+      "url": "https://gn-math.github.io/html/76-fix3.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/76.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Cut the Rope",
+      "url": "https://gn-math.github.io/html/85-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/85.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Journey Downhill",
+      "url": "https://gn-math.github.io/html/94-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/94.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Ninja vs EvilCorp",
+      "url": "https://gn-math.github.io/html/101-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/101.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Tube Jumpers",
+      "url": "https://gn-math.github.io/html/111-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/111.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Wordle",
+      "url": "https://gn-math.github.io/html/112-fix3.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/112.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Snow Rider 3D",
+      "url": "https://gn-math.github.io/html/119-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/119.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Slice it All",
+      "url": "https://gn-math.github.io/html/128-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/128.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Hill Climb Racing Lite",
+      "url": "https://gn-math.github.io/html/157-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/157.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Crazy Cattle 3D",
+      "url": "https://gn-math.github.io/html/164-fix3.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/164.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Drift Hunters",
+      "url": "https://gn-math.github.io/html/173-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/173.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Slope",
+      "url": "https://gn-math.github.io/html/198-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/198.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Five Nights at Winston's",
+      "url": "https://gn-math.github.io/html/204-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/204.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Snowbattle.io",
+      "url": "https://gn-math.github.io/html/207-fix3.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/207.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Draw the Hill",
+      "url": "https://gn-math.github.io/html/209-fix3.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/209.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Cut the Rope: Time Travel",
+      "url": "https://gn-math.github.io/html/213-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/213.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Cut the Rope: Holiday Gift",
+      "url": "https://gn-math.github.io/html/214-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/214.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "That's Not My Neighbor",
+      "url": "https://gn-math.github.io/html/216-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/216.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Fruit Ninja",
+      "url": "https://gn-math.github.io/html/261-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/261.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "BlockPost",
+      "url": "https://gn-math.github.io/html/273-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/273.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Madalin Stunt Cars 2",
+      "url": "https://gn-math.github.io/html/278-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/278.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Madalin Stunt Cars 3",
+      "url": "https://gn-math.github.io/html/279-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/279.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Papery Planes",
+      "url": "https://gn-math.github.io/html/280-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/280.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Protektor",
+      "url": "https://gn-math.github.io/html/282-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/282.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Rooftop Snipers",
+      "url": "https://gn-math.github.io/html/283-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/283.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Basket Bros",
+      "url": "https://gn-math.github.io/html/285-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/285.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Angry Birds Chrome",
+      "url": "https://gn-math.github.io/html/316-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/316.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Crazy Cars",
+      "url": "https://gn-math.github.io/html/331-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/331.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "House of Hazards",
+      "url": "https://gn-math.github.io/html/339-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/339.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Adventure Capatalist",
+      "url": "https://gn-math.github.io/html/354-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/354.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Dadish 3D",
+      "url": "https://gn-math.github.io/html/358-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/358.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Daily Dadish",
+      "url": "https://gn-math.github.io/html/359-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/359.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Google Feud",
+      "url": "https://gn-math.github.io/html/361-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/361.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Idle Lumber Inc",
+      "url": "https://gn-math.github.io/html/363-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/363.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Parking Fury 3D",
+      "url": "https://gn-math.github.io/html/367-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/367.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Smash Karts",
+      "url": "https://gn-math.github.io/html/370-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/370.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Stickman Boost",
+      "url": "https://gn-math.github.io/html/372-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/372.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Stickman Climb",
+      "url": "https://gn-math.github.io/html/373-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/373.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Stickman Golf",
+      "url": "https://gn-math.github.io/html/374-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/374.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "2048 Merge Run",
+      "url": "https://gn-math.github.io/html/375-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/375.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Money Rush",
+      "url": "https://gn-math.github.io/html/400-fix3.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/400.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "WebFishing",
+      "url": "https://gn-math.github.io/html/423-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/423.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "OMORI",
+      "url": "https://gn-math.github.io/html/427-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/427.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "10 Minutes Till Dawn",
+      "url": "https://gn-math.github.io/html/430-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/430.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "99 Balls",
+      "url": "https://gn-math.github.io/html/431-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/431.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Station 141",
+      "url": "https://gn-math.github.io/html/452-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/452.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Lacey's Flash Games",
+      "url": "https://gn-math.github.io/html/463-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/463.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Bad Time Simulator",
+      "url": "https://gn-math.github.io/html/472-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/472.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Friday Night Funkin': vs. QT",
+      "url": "https://gn-math.github.io/html/487-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/487.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Friday Night Funkin': Jeffy's Endless Aethos",
+      "url": "https://gn-math.github.io/html/496-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/496.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Friday Night Funkin': vs. BOPCITY",
+      "url": "https://gn-math.github.io/html/497-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/497.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Friday Night Funkin': 17 Bucks: Floor 1",
+      "url": "https://gn-math.github.io/html/498-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/498.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Five Nights at Candy's 2",
+      "url": "https://gn-math.github.io/html/504-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/504.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Nubby's Number Factory",
+      "url": "https://gn-math.github.io/html/517-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/517.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Touhou: Luminous Strike",
+      "url": "https://gn-math.github.io/html/518-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/518.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Touhou Mother",
+      "url": "https://gn-math.github.io/html/523-fix2.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/523.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "SpongeBob SquarePants: Land Ho!",
+      "url": "https://gn-math.github.io/html/526-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/526.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "SpongeBob SquarePants: Squidward's Sizzlin' Scare",
+      "url": "https://gn-math.github.io/html/528-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/528.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "SpongeBob SquarePants: The Kah-Ray-Tay Squid",
+      "url": "https://gn-math.github.io/html/531-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/531.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Teen Titans GO!: Jump Jousts",
+      "url": "https://gn-math.github.io/html/534-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/534.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Cat Gunner: Super Zombie Shoot",
+      "url": "https://gn-math.github.io/html/537-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/537.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Clash Of Vikings",
+      "url": "https://gn-math.github.io/html/545-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/545.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "Football Bros",
+      "url": "https://gn-math.github.io/html/548-fix.html",
+      "img": "https://raw.githubusercontent.com/gn-math/covers/main/548.png",
+      "source": "gn-math"
+    },
+    {
+      "name": "PEAK",
+      "url": "https://wasm.rip/files/peak/PEAK.html",
+      "img": "https://wasm.rip/img/peak.png",
+      "source": "wasm.rip"
+    },
+    {
+      "name": "GTA 3",
+      "url": "https://wasm.rip/files/gta3/index.html",
+      "img": "https://wasm.rip/img/gta3.png",
+      "source": "wasm.rip"
+    },
+    {
+      "name": "Lethal Company",
+      "url": "https://wasm.rip/files/lethal/index.html",
+      "img": "https://wasm.rip/img/lethal.jpg",
+      "source": "wasm.rip"
+    },
+    {
+      "name": "Crashout Crew",
+      "url": "https://wasm.rip/files/cc/index.html",
+      "img": "https://wasm.rip/img/cc.jpg",
+      "source": "wasm.rip"
+    }
+  ],
+  "excluded": [
+    "Azahar requires a separately supplied game"
+  ]
+}

@@ -149,6 +149,13 @@
 			local: true,
 		},
 	];
+	const gameNames = new Set(GAMES.map(game => game.name.toLowerCase().replace(/[^a-z0-9]/g, "")));
+	for (const game of window.ASTERIA_GAMES || []) {
+		const key = game.name.toLowerCase().replace(/[^a-z0-9]/g, "");
+		if (gameNames.has(key)) continue;
+		gameNames.add(key);
+		GAMES.push(game);
+	}
 	const APPS = [
 		{ name: "Spotify", url: "https://open.spotify.com/", img: "apps/spotify.png" },
 		{ name: "SoundCloud", url: "https://soundcloud.com/", img: "apps/soundcloud.png" },
@@ -392,20 +399,27 @@
 		if (!grid) return;
 		grid.replaceChildren();
 		const query = pageEl.querySelector("#game-search")?.value.trim().toLowerCase() || "";
-		for (const item of list.filter(item => item.name.toLowerCase().includes(query))) {
+		const filtered = list.filter(item => item.name.toLowerCase().includes(query));
+		if (pageEl === pages.games) document.getElementById("game-count").textContent = (query ? filtered.length + " / " : "") + list.length + " games";
+		for (const item of filtered) {
 			const tile = document.createElement("button");
 			tile.className = "game-tile";
 			tile.title = item.name;
 
 			const thumb = document.createElement("div");
 			thumb.className = "game-thumb";
-			thumb.style.backgroundImage = `url("${item.img}")`;
 			if (item.icon) {
 				thumb.classList.add("app-icon");
-				thumb.style.backgroundImage = "none";
 				thumb.style.maskImage = `url("${item.img}")`;
+			} else {
+				const image = document.createElement("img");
+				image.src = item.img;
+				image.alt = "";
+				image.loading = "lazy";
+				image.decoding = "async";
+				if (item.imgPosition) image.style.objectPosition = item.imgPosition;
+				thumb.append(image);
 			}
-			if (item.imgPosition) thumb.style.backgroundPosition = item.imgPosition;
 
 			const name = document.createElement("span");
 			name.className = "game-name";
