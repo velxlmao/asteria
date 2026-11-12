@@ -1,11 +1,21 @@
 const headers = { "access-control-allow-origin": "*", "access-control-allow-methods": "POST,OPTIONS", "access-control-allow-headers": "content-type", "content-type": "application/json" };
 const json = (value, status = 200) => new Response(JSON.stringify(value), { status, headers });
+export { ChatArchive } from "./archive.js";
 export default {
 	async fetch(request, env) {
 		if (request.method === "OPTIONS") return new Response(null, { headers });
 		if (request.method !== "POST") return json({ error: "method not allowed" }, 405);
-		const limit = await env.AI_LIMIT.limit({ key: request.headers.get("cf-connecting-ip") || "unknown" });
+		const path = new URL(request.url).pathname;
+		const isUpload = path.startsWith("/archive/") && path !== "/archive/login";
+		const limit = await (isUpload ? env.ARCHIVE_LIMIT : env.AI_LIMIT).limit({ key: request.headers.get("cf-connecting-ip") || "unknown" });
 		if (!limit.success) return json({ error: "too many messages, try again in a minute" }, 429);
+		if (new URL(request.url).pathname.startsWith("/archive/")) {
+			const raw = await request.text();
+			if (raw.length > 1800000) return json({ error: "request too large" }, 413);
+			const archive = env.ARCHIVE.get(env.ARCHIVE.idFromName("chats"));
+			const response = await archive.fetch(new Request(request.url, { method: "POST", body: raw }));
+			return new Response(response.body, { status: response.status, headers: { ...headers, "cache-control": "no-store" } });
+		}
 		try {
 			const raw = await request.text();
 			if (raw.length > 1800000) return json({ error: "request too large" }, 413);

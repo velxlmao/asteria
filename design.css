@@ -394,3 +394,10 @@ body.view-mode #dot-matrix { display: none; }
 .ai-terms p { line-height: 1.65; margin: 0 0 16px; }
 .ai-terms button { padding: 10px 20px; margin-right: 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); cursor: pointer; }
 .ai-terms button:hover { border-color: var(--accent); }
+.ai-archive-viewer { width: min(840px, calc(100vw - 32px)); }
+.ai-archive-viewer > div { margin-top: 20px; }
+.ai-archive-viewer .ai-archive-chat { display: block; width: 100%; margin: 0 0 10px; text-align: left; }
+.ai-archive-message { padding: 16px 0; border-bottom: 1px solid var(--border); }
+.ai-archive-message p { white-space: pre-wrap; overflow-wrap: anywhere; }
+.ai-archive-status { font-size: 12px; line-height: 1.5; }
+.ai-terms button:disabled { opacity: .5; cursor: wait; }
