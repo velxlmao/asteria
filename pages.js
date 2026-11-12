@@ -444,7 +444,13 @@
 	const fullscreen = document.createElement("button");
 	fullscreen.id = "game-fullscreen";
 	fullscreen.type = "button";
-	fullscreen.textContent = "⛶";
+	const fullscreenIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+	fullscreenIcon.setAttribute("viewBox", "0 0 24 24");
+	fullscreenIcon.setAttribute("aria-hidden", "true");
+	const fullscreenPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+	fullscreenPath.setAttribute("d", "M8 4H4v4m12-4h4v4M4 16v4h4m12-4v4h-4");
+	fullscreenIcon.append(fullscreenPath);
+	fullscreen.append(fullscreenIcon);
 	fullscreen.setAttribute("aria-label", "fullscreen game");
 	fullscreen.title = "fullscreen game";
 	document.getElementById("view").append(fullscreen);
