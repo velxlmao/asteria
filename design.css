@@ -255,6 +255,7 @@ body.view-mode #browser-bar { display: flex; transform: translateY(-66px); opaci
 body.view-mode #browser-top-edge { display: block; }
 body.view-mode:has(#browser-top-edge:hover) #browser-bar, body.view-mode #browser-bar:hover, body.view-mode #browser-bar:focus-within { transform: translateY(0); opacity: 1; }
 body.view-mode #browser-bar::before { content: ""; position: absolute; inset: -12px -16px; z-index: -1; pointer-events: auto; }
+body.view-mode #browser-bar button, body.view-mode #browser-address { background: color-mix(in srgb, var(--bg) 94%, transparent); border-color: color-mix(in srgb, var(--text) 30%, transparent); }
 body.view-mode #view { top: 0; }
 body.playing-game #view { top: 0; }
 #reactive-paint { contain: strict; }
