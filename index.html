@@ -165,7 +165,7 @@
 		</nav>
 		<div id="edge"></div>
 
-		<div id="settings-overlay" hidden>
+		<section id="settings-overlay" aria-label="settings" hidden>
 			<div id="settings-panel">
 				<button id="settings-close" title="close" aria-label="close">
 					<svg viewBox="0 0 24 24" width="22" height="22" fill="none"
@@ -174,32 +174,48 @@
 						<path d="M6 6l12 12M18 6L6 18" />
 					</svg>
 				</button>
-				<h2 class="panel-title">settings</h2>
+				<nav class="settings-categories" aria-label="settings categories">
+					<h2 class="panel-title">settings</h2>
+					<button type="button" data-settings-category="appearance" aria-controls="settings-appearance" aria-pressed="true">appearance</button>
+					<button type="button" data-settings-category="privacy" aria-controls="settings-privacy" aria-pressed="false">privacy</button>
+					<button type="button" data-settings-category="browsing" aria-controls="settings-browsing" aria-pressed="false">browsing</button>
+				</nav>
+				<div class="settings-content">
+				<section id="settings-appearance" class="settings-category" aria-labelledby="settings-appearance-title">
+				<h3 id="settings-appearance-title">appearance</h3>
 				<div class="setting">
 					<span class="setting-label">theme</span>
 					<div id="theme-swatches"></div>
 				</div>
+				</section>
+				<section id="settings-privacy" class="settings-category" aria-labelledby="settings-privacy-title" hidden>
+				<h3 id="settings-privacy-title">privacy</h3>
 				<div class="setting row">
 					<span class="setting-label">panic key</span>
 					<button id="bind-panic" class="bindkey" title="click then press a key">`</button>
 				</div>
 				<div class="setting row">
 					<span class="setting-label">panic type</span>
-					<select id="panic-type" class="select">
+					<select id="panic-type" class="select" aria-label="panic type">
 						<option value="decoy">decoy</option>
 						<option value="website">website</option>
 					</select>
 				</div>
 				<div class="setting row">
 					<span class="setting-label">about:blank cloaking</span>
-					<button id="toggle-cloak" class="toggle" role="switch" aria-checked="false"><span class="knob"></span></button>
+					<button id="toggle-cloak" class="toggle" role="switch" aria-label="about:blank cloaking" aria-checked="false"><span class="knob"></span></button>
 				</div>
+				</section>
+				<section id="settings-browsing" class="settings-category" aria-labelledby="settings-browsing-title" hidden>
+				<h3 id="settings-browsing-title">browsing</h3>
 				<div class="setting row">
 					<span class="setting-label">confirm before closing</span>
-					<button id="toggle-anticlose" class="toggle" role="switch" aria-checked="true"><span class="knob"></span></button>
+					<button id="toggle-anticlose" class="toggle" role="switch" aria-label="confirm before closing" aria-checked="true"><span class="knob"></span></button>
+				</div>
+				</section>
 				</div>
 			</div>
-		</div>
+		</section>
 
 
 <main id="home">

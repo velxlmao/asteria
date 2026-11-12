@@ -8,6 +8,7 @@
 			home.hidden = true;
 			if (id === "nav-settings") window.dispatchEvent(new Event("asteria-browser-navigate"));
 			else {
+				document.getElementById("nav-settings").classList.remove("active");
 				const settings = document.getElementById("settings-overlay");
 				settings.hidden = true;
 				settings.classList.remove("open", "closing");

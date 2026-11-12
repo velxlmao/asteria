@@ -36,6 +36,7 @@
 		b.className = "swatch";
 		b.dataset.id = t.id;
 		b.title = t.id || "default";
+		b.setAttribute("aria-label", (t.id || "default") + " theme");
 		b.style.background = t.bg;
 		b.style.borderColor = t.accent;
 		b.addEventListener("click", () => apply(t.id));
@@ -89,11 +90,28 @@
 		return ctl;
 	};
 
-	const settings = makeOverlay(
-		overlay,
-		btnSettings,
-		document.getElementById("settings-close")
-	);
+	const settings = {
+		open() {
+			closeAll(overlay);
+			overlay.hidden = false;
+			overlay.classList.remove("closing");
+			overlay.classList.add("open");
+			btnSettings.classList.add("active");
+		},
+		close() {
+			overlay.hidden = true;
+			overlay.classList.remove("open", "closing");
+			btnSettings.classList.remove("active");
+		},
+	};
+	btnSettings.addEventListener("click", settings.open);
+	btnClose.addEventListener("click", settings.close);
+	for (const button of document.querySelectorAll("[data-settings-category]")) {
+		button.addEventListener("click", () => {
+			for (const category of document.querySelectorAll(".settings-category")) category.hidden = category.id !== button.getAttribute("aria-controls");
+			for (const option of document.querySelectorAll("[data-settings-category]")) option.setAttribute("aria-pressed", String(option === button));
+		});
+	}
 	overlays.push({ el: overlay, ctl: settings });
 
 	btnHome.addEventListener("click", () => {
