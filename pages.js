@@ -150,6 +150,8 @@
 		},
 	];
 	const APPS = [
+		{ name: "TikTok", url: "https://www.tiktok.com/", img: "shortcuts/tiktok.svg", icon: true },
+		{ name: "Instagram", url: "https://www.instagram.com/", img: "shortcuts/instagram.svg", icon: true },
 		{
 			name: "Discord",
 			url: "https://discord.com/app",
@@ -395,6 +397,11 @@
 			const thumb = document.createElement("div");
 			thumb.className = "game-thumb";
 			thumb.style.backgroundImage = `url("${item.img}")`;
+			if (item.icon) {
+				thumb.classList.add("app-icon");
+				thumb.style.backgroundImage = "none";
+				thumb.style.maskImage = `url("${item.img}")`;
+			}
 			if (item.imgPosition) thumb.style.backgroundPosition = item.imgPosition;
 
 			const name = document.createElement("span");
