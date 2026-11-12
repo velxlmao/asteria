@@ -265,6 +265,9 @@ body.playing-game #view { top: 0; }
 .separate-page .page-head { background: transparent; }
 .separate-page #settings-overlay { inset: 64px 16px 90px; background: transparent; align-items: flex-start; overflow: auto; }
 .separate-page #settings-panel { width: min(900px, 100%); max-height: none; margin: 20px auto; animation: none; }
+.separate-page .fullpage.open, .separate-page #home:not([hidden]), .separate-page #settings-overlay.open #settings-panel { animation: tab-slide-in 180ms ease-out; }
+@keyframes tab-slide-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .separate-page .fullpage.open, .separate-page #home:not([hidden]), .separate-page #settings-overlay.open #settings-panel { animation: none; } }
 .separate-page .page-back { display: none; }
 body.content-page #browser-bar { display: none; }
 body.content-page .fullpage { top: 16px; }
