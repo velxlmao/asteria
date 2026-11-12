@@ -296,7 +296,7 @@ body.content-page #settings-overlay { top: 16px; }
 .ai-compose button { align-self: flex-end; margin-bottom: 4px; border-radius: 18px; }
 .ai-messages { width: 100%; max-width: 800px; margin: 0 auto; }
 .ai-message { margin-bottom: 24px; padding: 10px 8px; }
-.ai-message.user { width: fit-content; max-width: 85%; margin-left: auto; padding: 12px 18px; border-radius: 20px; }
+.ai-message.user { width: fit-content; max-width: 85%; margin-left: auto; margin-right: 0; padding: 12px 18px; border-radius: 20px; }
 .ai-message.user strong { display: none; }
 .ai-message.user p { margin-top: 0; }
 .ai-sidebar { padding: 20px 12px; }
