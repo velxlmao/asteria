@@ -74,7 +74,7 @@ function withCOI(resp, sameOrigin, isNav, isHTML = false) {
 async function handleRequest(event) {
 	const url = new URL(event.request.url);
 
-	if (url.pathname.startsWith(PROXY_PREFIX)) {
+	if (url.pathname.startsWith(PROXY_PREFIX) || url.pathname === SCOPE + "lib/s/reader.wasm") {
 		try {
 			const scramjet = await scramjetPromise;
 			await withTimeout(scramjet.loadConfig(), 15000);
