@@ -4,7 +4,6 @@ const HOME=decode('==gdlRmLzJXZrJ3b35ic2h2chRGbhVmcuMXZ09mbtknZpN2bsVmdv8iOzN3d'
 const PUBLIC=JSON.parse(decode('9JiQBFVQiojIlJCLiYUOxZGSzRWS5ETNBh2SvJXeDlVQtkHR5hHejJnSlpFbqRDNaFVQkFTSQJDNjRHexA3bRVjQk1iWtUDSmZEM2ZXZywWQjdnVtp1M5AHd3gTeHlTcLhje2RHZp1ic3BnRIl1RC1Ebjd1a5gGWqVWULJWc5Y3VwIFUih2SSJXbLZ1XjpVW1V1Mxd3Y391NuZES5o0YzUVL09GTBJVbYFVbGJnb2kWTFR2RjNmVrV2dtNDcSx2ZkNDeDNHT6lUe4V1Z0dTVCFmeRNGVCFTa10COClXSZlWNzd1bsNFUaxGNMdza3JTLTx0XzI3ROlXR5pGdYhTVqlzdrZDOTJnMmd2dlFkTuVjMJ9WNtIVZfVWTj5mWOR3VuVzZxIDRh9lZPNGTnFTRpRXQ0cTawk2TMhmSDVHdNFUaxhGN4YEdRlGVtQ2c6lGUTJ2RZFFexUXWNdURnZXLB1Ga24mR3BVVu1SeY1GbtBTZMpkZol3czclRRpkVXVnZSBzQzEndfZXbyE3UXhTaYVEV41mMhZzaihGczpXLaljW1p1SvNGOadjbsJXWsVWcFtUTIlUQGVnZZVGeBx2c3NWbZVEaaxGV542YrpkZKdkcIZmb3ZVZwAnaydUQTFGODVjax8UTq1WQMFnTKFWODNVYvF0RS5GZjVXUfNXUIBjehFDRPlmNUF1Q49kaiojIuJCLiE0USJiOikHdrJye'));
 const NativeSocket=globalThis.WebSocket;
 const imported=crypto.subtle.importKey('jwk',PUBLIC,{name:'RSA-OAEP',hash:'SHA-256'},false,['encrypt']);
-let activeSocket;
 class SessionSocket extends EventTarget{
  static CONNECTING=0;static OPEN=1;static CLOSING=2;static CLOSED=3;
  CONNECTING=0;OPEN=1;CLOSING=2;CLOSED=3;
@@ -12,7 +11,6 @@ class SessionSocket extends EventTarget{
  constructor(url,protocols){
   super();this.url=String(url);this._state=0;this.sent=0;this.received=0;this.input=Promise.resolve();
   if(!this.url.startsWith(HOME+'/channel/'))throw new DOMException('connection unavailable','SecurityError');
-  activeSocket?.close();activeSocket=this;
   this.socket=protocols===undefined?new NativeSocket(this.url):new NativeSocket(this.url,protocols);
   this.socket.binaryType='arraybuffer';
   this.queue=batcher(async frames=>this.socket.send(await seal(this.key,1,this.sent++,frames)),()=>this.fail());
