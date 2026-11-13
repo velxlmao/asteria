@@ -15,6 +15,7 @@
  let moderator=false,imagePerms=false,pendingImage=null,preparingImage=false;
  let replyTo = null, chatState = { enabled: true, id: '', reactions: {} }, emojiTarget = null;
  const people = new Map();
+ const selectedMentions=new Map();
  function element(tag, className, text) { const node=document.createElement(tag);node.className=className;if(text)node.textContent=text;return node; }
  function button(label, action, className='chat-action') { const node=element('button',className,label);node.type='button';node.addEventListener('click',action);return node; }
  const replyBar=element('div','chat-reply-bar');replyBar.hidden=true;
@@ -49,7 +50,7 @@
  const membersBar=element('aside','chat-members');membersBar.setAttribute('aria-label','chat members');const membersTitle=element('h2','','members');const membersList=element('div','chat-member-list');membersBar.append(membersTitle,membersList);$('chat-page').append(membersBar);
  const membersToggle=button('members',()=>{const expanded=$('chat-page').classList.toggle('members-expanded');membersToggle.setAttribute('aria-expanded',String(expanded));},'chat-members-toggle');membersToggle.setAttribute('aria-expanded','false');document.querySelector('#chat-page .chat-head').append(membersToggle);
  function tags(target,user){for(const [enabled,label]of [[user.owner,'owner'],[user.moderator,'moderator'],[user.imagePerms,'image perms']])if(enabled)target.append(element('span','chat-owner chat-role',label));}
- function renderMembers(){membersTitle.textContent='members · '+people.size;membersList.replaceChildren();for(const person of [...people.values()].sort((a,b)=>Number(b.online)-Number(a.online)||Number(b.owner)-Number(a.owner)||Number(b.moderator)-Number(a.moderator)||a.name.localeCompare(b.name))){const member=button(person.name,()=>{if(input.value.length+person.name.length+2>input.maxLength){error('message is too long');return;}input.setRangeText('@'+person.name+' ',input.selectionStart,input.selectionEnd,'end');input.focus();controls();},'chat-member');member.classList.toggle('offline',!person.online);member.title=person.online?'online':'offline';member.disabled=!ready||banned||!chatState.enabled;tags(member,person);membersList.append(member);}if(!people.size)membersList.append(element('p','chat-note','no one has set a name yet'));}
+ function renderMembers(){membersTitle.textContent='members · '+people.size;membersList.replaceChildren();for(const person of [...people.values()].sort((a,b)=>Number(b.online)-Number(a.online)||Number(b.owner)-Number(a.owner)||Number(b.moderator)-Number(a.moderator)||a.name.localeCompare(b.name))){const member=button(person.name,()=>{if(input.value.length+person.name.length+2>input.maxLength){error('message is too long');return;}selectedMentions.set(person.name.toLowerCase(),person.id);input.setRangeText('@'+person.name+' ',input.selectionStart,input.selectionEnd,'end');input.focus();controls();},'chat-member');member.classList.toggle('offline',!person.online);member.title=person.online?'online':'offline';member.disabled=!ready||banned||!chatState.enabled;tags(member,person);membersList.append(member);}if(!people.size)membersList.append(element('p','chat-note','no one has set a name yet'));}
  const emojiNames=['thumbs up','thumbs down','heart love','laugh joy','cry sob','fire','party celebration','eyes','skull','pray thanks','wilted rose','peace','check yes','cross no','thinking','surprised','sad','angry','party face','cool sunglasses','smile','love eyes','handshake','hundred','star','purple heart','salute','stone face','mind blown','sleep','rocket','popcorn'];
  function renderEmojis() {
   emojiGrid.replaceChildren();
@@ -92,10 +93,10 @@
   mentionMenu.replaceChildren();mentionMenu.hidden=true;
   if(!match||!ready||!chatState.enabled)return;
   const matches=knownPeople().filter(person=>person.id!==ownId&&person.name.toLowerCase().startsWith(match[1].toLowerCase())).slice(0,8);
-  for(const person of matches){const choice=button('@'+person.name,()=>{const start=input.selectionStart-match[1].length-1,end=input.selectionStart;if(input.value.length-(end-start)+person.name.length+2>input.maxLength){error('message is too long');return;}input.setRangeText('@'+person.name+' ',start,end,'end');mentionMenu.hidden=true;input.focus();controls();},'chat-mention-choice');choice.setAttribute('role','option');mentionMenu.append(choice);}
+  for(const person of matches){const choice=button('@'+person.name,()=>{const start=input.selectionStart-match[1].length-1,end=input.selectionStart;if(input.value.length-(end-start)+person.name.length+2>input.maxLength){error('message is too long');return;}selectedMentions.set(person.name.toLowerCase(),person.id);input.setRangeText('@'+person.name+' ',start,end,'end');mentionMenu.hidden=true;input.focus();controls();},'chat-mention-choice');choice.setAttribute('role','option');mentionMenu.append(choice);}
   mentionMenu.hidden=!matches.length;
  }
- function messageMentions(text) { return knownPeople().filter(person=>text.toLowerCase().includes('@'+person.name.toLowerCase())).slice(0,10).map(person=>person.id); }
+ function messageMentions(text) { const found=new Map();for(const person of knownPeople().filter(person=>rules.mentionsName(text,person.name)).sort((a,b)=>Number(b.owner)-Number(a.owner)||Number(b.online)-Number(a.online))){const key=person.name.toLowerCase(),selected=selectedMentions.get(key);if(!found.has(key)&&(!selected||selected===person.id))found.set(key,person.id);}return [...found.values()].slice(0,10); }
  function renderText(target,message) {
   const mentions=(message.mentions||[]).filter(person=>typeof person.name==='string').sort((a,b)=>b.name.length-a.name.length);
   if(!mentions.length){target.textContent=message.text;return;}
@@ -257,7 +258,7 @@
      if (!messages.has(data.message.id) && data.message.authorId !== ownId) window.dispatchEvent(new CustomEvent('velx-chat-notification', { detail: data.message }));
      messages.set(data.message.id, data.message);
      while (messages.size > 100) messages.delete(messages.keys().next().value);
-     if (sameBrowser(data.message) && pending) { pending = ''; input.value = '';setReply(null);clearImage();mentionMenu.hidden=true; error(); }
+     if (sameBrowser(data.message) && pending) { pending = ''; input.value = '';selectedMentions.clear();setReply(null);clearImage();mentionMenu.hidden=true; error(); }
      render(); controls();
     }
     if (data.type === 'error') {

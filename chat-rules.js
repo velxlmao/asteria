@@ -18,5 +18,6 @@ globalThis.AsteriaChatRules = (() => {
  }
  function nameKey(value) { return normalized(value).replace(/[^a-z]/g,''); }
  function validName(value) { return typeof value==='string'&&value.trim().length>0&&value.trim().length<=24&&!/[\p{Cc}\p{Cf}]/u.test(value)&&!disallowed(value)&&nameKey(value)!=='lukedixon'; }
- return { emojis, normalized, disallowed, nameKey, validName };
+ function mentionsName(text,name){const value=text.normalize('NFKC').toLowerCase(),needle='@'+name.normalize('NFKC').toLowerCase();let index=value.indexOf(needle);while(index!==-1){const before=value[index-1]||'',after=value[index+needle.length]||'';if(!/[\p{L}\p{N}_@]/u.test(before)&&!/[\p{L}\p{N}_]/u.test(after))return true;index=value.indexOf(needle,index+1);}return false;}
+ return { emojis, normalized, disallowed, nameKey, validName,mentionsName };
 })();

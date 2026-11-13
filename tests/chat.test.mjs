@@ -7,6 +7,9 @@ for(const text of ['hello world','class','assistant','Scunthorpe','pass the ball
 assert.equal(rules.validName('l u k e d i x o n'),false);
 assert.equal(rules.validName('n\u200bigga'),false);
 assert.equal(rules.nameKey('vеlx'),'velx');
+assert.equal(rules.mentionsName('hello @bob!','bob'),true);
+assert.equal(rules.mentionsName('@bobby','bob'),false);
+assert.equal(rules.mentionsName('email@bob.example','bob'),false);
 const source=(await readFile(new URL('../chat-worker/index.js',import.meta.url),'utf8')).replace("import '../chat-rules.js';",'');
 const {ChatRoom,imageData}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
 const records=new Map();

@@ -135,7 +135,7 @@ export class ChatRoom {
    const mentions=[];
    for(const targetId of [...new Set(Array.isArray(data.mentions)?data.mentions:[])].slice(0,10)) {
     if(typeof targetId!=='string'||!idPattern.test(targetId))continue;
-    const target=await this.visitor(targetId);if(target?.name&&text.toLowerCase().includes('@'+target.name.toLowerCase()))mentions.push({id:target.id,name:target.name});
+    const target=await this.visitor(targetId);if(target?.name&&rules.mentionsName(text,target.name))mentions.push({id:target.id,name:target.name});
    }
    const time=Math.max(Date.now(),Number(await this.storage.get('message-time')||0)+1);
    const message={id:crypto.randomUUID(),authorId:id,name:user.name,owner:user.owner,moderator:!!visitor.moderator,imagePerms:!!visitor.imagePerms,time,text,replyTo:reply,mentions,reactions:{}};
