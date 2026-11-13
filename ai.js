@@ -158,13 +158,25 @@
 	);
 	const acceptTerms = element("button", "", "ok");
 	acceptTerms.type = "button";
-	acceptTerms.addEventListener("click", () => { termsAccepted = true; terms.close(); window.dispatchEvent(new CustomEvent("asteria-ai-sync", { detail: chats })); input.focus(); });
+	let termsClosing = false;
+	async function dismissTerms(after) {
+		if (termsClosing) return;
+		termsClosing = true;
+		terms.classList.add("is-closing");
+		const duration = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 160;
+		await terms.animate([{ opacity: 1 }, { opacity: 0 }], { duration, easing: "ease-out" }).finished.catch(() => {});
+		terms.close();
+		terms.classList.remove("is-closing");
+		termsClosing = false;
+		after();
+	}
+	acceptTerms.addEventListener("click", () => dismissTerms(() => { termsAccepted = true; window.dispatchEvent(new CustomEvent("asteria-ai-sync", { detail: chats })); input.focus(); }));
 	terms.append(acceptTerms);
 	document.body.append(terms);
 	terms.addEventListener("cancel", event => event.preventDefault());
 	const leaveTerms = element("button", "", "leave ai");
 	leaveTerms.type = "button";
-	leaveTerms.addEventListener("click", () => { terms.close(); document.getElementById("nav-home").click(); });
+	leaveTerms.addEventListener("click", () => dismissTerms(() => document.getElementById("nav-home").click()));
 	terms.append(leaveTerms);
 	function showTerms() { if (!termsAccepted && !terms.open) terms.showModal(); }
 	window.addEventListener("asteria-ai-open", showTerms);
