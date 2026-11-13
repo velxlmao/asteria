@@ -412,7 +412,9 @@ body.view-mode #dot-matrix { display: none; }
 .ai-archive-status { font-size: 12px; line-height: 1.5; }
 .ai-terms button:disabled { opacity: .5; cursor: wait; }
 #chat-page .chat-content { position: relative; }
-#chat-page #chat-form { position: relative; }
+#chat-page #chat-form { position: relative; align-items: center; }
+#chat-page #chat-input { flex: 1; min-width: 0; height: 44px; line-height: 20px; }
+#chat-page button.chat-emoji-toggle { display: grid; place-items: center; flex: 0 0 40px; width: 40px; height: 40px; padding: 0; font-size: 22px; line-height: 1; }
 #chat-page .chat-message-actions, #chat-page .chat-reactions { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
 #chat-page .chat-message-actions { margin-top: 7px; justify-content: flex-end; }
 #chat-page button.chat-action, #chat-page button.chat-reaction, #chat-page button.chat-reaction-add { padding: 3px 8px; font-size: 12px; background: color-mix(in srgb, var(--surface) 35%, transparent); border-radius: 8px; }

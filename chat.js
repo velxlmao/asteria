@@ -9,6 +9,7 @@
  sidebar.append(serverTitle, profile); $('chat-page').prepend(sidebar);
  document.querySelector('#chat-page .page-title').textContent = 'public chat';
  input.placeholder = 'send a message';
+ input.rows = 1;
  const rules = globalThis.AsteriaChatRules;
  const content = document.querySelector('#chat-page .chat-content');
  const composer = $('chat-form');
