@@ -1,0 +1,27 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+function node(){const classes=new Set();return {children:[],events:{},attributes:{},dataset:{},classList:{add:value=>classes.add(value),remove:value=>classes.delete(value),contains:value=>classes.has(value)},setAttribute(key,value){this.attributes[key]=value;},append(...children){this.children.push(...children);},replaceChildren(){this.children=[];},addEventListener(type,fn){this.events[type]=fn;},matches(){return !!this.hover;},remove(){}};}
+const nodes=new Map(['app','sidebar','settings-panel','chat-notifications','chat-page'].map(id=>[id,node()]));
+const made=[],events={},timers=new Map(),storage=new Map();let timerId=0;
+const categories=node(),content=node();
+const context=vm.createContext({document:{body:node(),createElement(){const value=node();made.push(value);return value;},getElementById:id=>nodes.get(id),querySelector:selector=>selector==='.settings-categories'?categories:content},window:{addEventListener(type,fn){events[type]=fn;},dispatchEvent(event){events[event.type]?.(event);}},CustomEvent:class{constructor(type,options){this.type=type;this.detail=options.detail;}},localStorage:{getItem:key=>storage.get(key)||null,setItem:(key,value)=>storage.set(key,value)},setTimeout(fn){timers.set(++timerId,fn);return timerId;},clearTimeout:id=>timers.delete(id),$:id=>nodes.get(id)});
+const settings=fs.readFileSync('settings.js','utf8');
+vm.runInContext(settings.slice(settings.indexOf('\tconst notificationsNav='),settings.indexOf('\tfor (const button of document.querySelectorAll("[data-settings-category]"))')),context);
+const toggle=made.find(value=>value.attributes.role==='switch');assert.equal(toggle.checked,true);
+toggle.checked=false;toggle.events.change();assert.equal(storage.get('asteria-chat-notifications'),'off');
+const notifications=fs.readFileSync('notifications.js','utf8');
+vm.runInContext(notifications.slice(notifications.indexOf(" let chatNotificationsEnabled="),notifications.indexOf(' function finish(')),context);
+events['velx-chat-notification']({detail:{name:'tester',text:'hello'}});assert.equal(nodes.get('chat-notifications').children.length,0);
+toggle.checked=true;toggle.events.change();events['velx-chat-notification']({detail:{name:'tester',text:'hello'}});assert.equal(nodes.get('chat-notifications').children.length,1);
+toggle.checked=false;toggle.events.change();assert.equal(nodes.get('chat-notifications').children.length,0);
+const pages=fs.readFileSync('pages.js','utf8');
+vm.runInContext(pages.slice(pages.indexOf('\tconst dockZone ='),pages.indexOf('\tconst fullscreen =')),context);
+const zone=nodes.get('app').children.find(value=>value.id==='game-dock-zone');assert(zone);
+zone.events.pointerenter();assert.equal(nodes.get('sidebar').classList.contains('dock-visible'),false);
+vm.runInContext('document.body.classList.add("playing-game")',context);
+zone.events.pointerenter();assert.equal(nodes.get('sidebar').classList.contains('dock-visible'),true);
+zone.events.pointerleave();assert.equal(nodes.get('sidebar').classList.contains('dock-visible'),true);
+const last=[...timers.values()].at(-1);last();assert.equal(nodes.get('sidebar').classList.contains('dock-visible'),false);
+zone.events.touchstart();assert.equal(nodes.get('sidebar').classList.contains('dock-visible'),true);
+console.log('notification preference, toast suppression, fullscreen dock placement and edge reveal checks passed');

@@ -106,6 +106,23 @@
 	};
 	btnSettings.addEventListener("click", settings.open);
 	btnClose.addEventListener("click", settings.close);
+	const notificationsNav=document.createElement("button");
+	notificationsNav.type="button";notificationsNav.textContent="notifications";
+	notificationsNav.dataset.settingsCategory="notifications";notificationsNav.setAttribute("aria-controls","settings-notifications");notificationsNav.setAttribute("aria-pressed","false");
+	const categoryNav=document.querySelector(".settings-categories");
+	if(categoryNav)categoryNav.append(notificationsNav);
+	const notificationsSection=document.createElement("section");notificationsSection.id="settings-notifications";notificationsSection.className="settings-category";notificationsSection.hidden=true;
+	const notificationsTitle=document.createElement("h3");notificationsTitle.id="settings-notifications-title";notificationsTitle.textContent="notifications";notificationsSection.setAttribute("aria-labelledby",notificationsTitle.id);
+	const notificationsLabel=document.createElement("label");notificationsLabel.className="setting row";
+	const notificationsText=document.createElement("span");notificationsText.className="setting-label";notificationsText.textContent="show chat notifications in the top right";
+	const notificationsToggle=document.createElement("input");notificationsToggle.type="checkbox";notificationsToggle.id="chat-notifications-toggle";notificationsToggle.setAttribute("role","switch");
+	function readNotifications(){try{return localStorage.getItem("asteria-chat-notifications")!=="off";}catch{return true;}}
+	notificationsToggle.checked=readNotifications();
+	notificationsToggle.addEventListener("change",()=>{try{localStorage.setItem("asteria-chat-notifications",notificationsToggle.checked?"on":"off");}catch{}window.dispatchEvent(new CustomEvent("asteria-notifications-change",{detail:notificationsToggle.checked}));});
+	window.addEventListener("storage",event=>{if(event.key==="asteria-chat-notifications")notificationsToggle.checked=readNotifications();});
+	notificationsLabel.append(notificationsText,notificationsToggle);notificationsSection.append(notificationsTitle,notificationsLabel);
+	const categoryContent=document.querySelector(".settings-content");
+	(categoryContent||document.getElementById("settings-panel")).append(notificationsSection);if(!categoryContent)notificationsSection.hidden=false;
 	for (const button of document.querySelectorAll("[data-settings-category]")) {
 		button.addEventListener("click", () => {
 			for (const category of document.querySelectorAll(".settings-category")) category.hidden = category.id !== button.getAttribute("aria-controls");

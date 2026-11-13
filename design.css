@@ -176,7 +176,7 @@ body.view-mode #sidebar, body.view-mode #sidebar.peek { transform: translateX(-5
 #game-dock-zone { display: none; position: fixed; z-index: 26; bottom: 0; left: 0; width: 100vw; height: 1px; }
 body.playing-game #game-dock-zone { display: block; }
 body.playing-game #sidebar { transform: translate(-50%, calc(100% + 20px)); opacity: 0; pointer-events: none; transition: transform .2s ease, opacity .2s ease; }
-body.playing-game:has(#game-dock-zone:hover) #sidebar, body.playing-game #sidebar:hover, body.playing-game #sidebar:focus-within { transform: translateX(-50%); opacity: 1; pointer-events: auto; }
+body.playing-game #sidebar.dock-visible, body.playing-game #sidebar:hover, body.playing-game #sidebar:focus-within { transform: translateX(-50%); opacity: 1; pointer-events: auto; }
 body.playing-game #sidebar::before { content: ""; position: absolute; top: 100%; left: 0; right: 0; height: 16px; }
 #game-fullscreen { display: none; position: absolute; top: 12px; right: 12px; z-index: 30; width: 38px; height: 38px; color: var(--text); background: color-mix(in srgb, var(--surface) 70%, transparent); border: 1px solid var(--border); border-radius: 9px; font-size: 25px; cursor: pointer; backdrop-filter: blur(10px); }
 body.playing-game #game-fullscreen { display: grid; place-items: center; }
@@ -448,6 +448,12 @@ body.view-mode #dot-matrix { display: none; }
 #chat-page button.chat-member:hover { background: color-mix(in srgb, var(--surface) 45%, transparent); }
 .chat-role { display: inline-block; padding: 1px 5px; border-radius: 6px; background: color-mix(in srgb, var(--accent) 15%, transparent); font-size: 10px; white-space: nowrap; }
 #chat-page button.chat-member.offline { color: var(--muted); }
+#chat-notifications-toggle { appearance: none; flex: 0 0 42px; width: 42px; height: 24px; padding: 3px; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); cursor: pointer; transition: background .15s; }
+#chat-notifications-toggle::before { content: ""; display: block; width: 16px; height: 16px; border-radius: 50%; background: var(--text); transition: transform .15s; }
+#chat-notifications-toggle:checked { background: var(--accent); }
+#chat-notifications-toggle:checked::before { transform: translateX(18px); }
+#chat-notifications-toggle:hover { border-color: var(--accent); }
+#chat-notifications-toggle:disabled { opacity: .5; cursor: default; }
 #chat-page .chat-members-toggle { display: none; }
 #chat-page .chat-sent-image { display: block; max-width: min(100%, 420px); max-height: 340px; width: auto; height: auto; object-fit: contain; margin-top: 8px; border-radius: 10px; }
 #chat-page .chat-image-preview { display: flex; gap: 10px; align-items: center; padding: 8px; }

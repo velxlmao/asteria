@@ -46,7 +46,10 @@
   try { seen = new Set(JSON.parse(event.newValue || '[]')); } catch {}
   for (let i = queue.length - 1; i >= 0; i--) if (seen.has(queue[i].id)) queue.splice(i, 1);
  });
+ let chatNotificationsEnabled=true;
+ try { chatNotificationsEnabled=localStorage.getItem('asteria-chat-notifications')!=='off'; } catch {}
  window.addEventListener('velx-chat-notification', event => {
+  if(!chatNotificationsEnabled)return;
   if (document.body.classList.contains('site-banned') || document.getElementById('chat-page').classList.contains('chat-banned')) return;
   const message = event.detail, toast = document.createElement('article'), open = document.createElement('button'), close = document.createElement('button');
   const author = document.createElement('strong'), body = document.createElement('span');
@@ -65,6 +68,8 @@
   while (stack.children.length > 3) stack.firstElementChild.remove();
   expire();
  });
+ window.addEventListener('asteria-notifications-change',event=>{chatNotificationsEnabled=event.detail!==false;if(!chatNotificationsEnabled)$('chat-notifications').replaceChildren();});
+ window.addEventListener('storage',event=>{if(event.key==='asteria-chat-notifications'){chatNotificationsEnabled=event.newValue!=='off';if(!chatNotificationsEnabled)$('chat-notifications').replaceChildren();}});
  function finish(error = '') {
   clearTimeout(timeout); sending = false;
   $('announcement-send').disabled = !owner;

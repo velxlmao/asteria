@@ -300,6 +300,7 @@
 	}
 
 	function launch(url, g) {
+		document.getElementById("sidebar").classList.remove("dock-visible");
 		document.body.classList.toggle("playing-game", GAMES.includes(g));
 		if (g && g.local) return launchLocal(url, g);
 		// loader is on top (z-index 10), so show it now and close the games
@@ -483,7 +484,20 @@
 	 navs.ai.addEventListener("click", () => openPage("ai"));
 	const dockZone = document.createElement("div");
 	dockZone.id = "game-dock-zone";
-	document.body.append(dockZone);
+	document.getElementById("app").append(dockZone);
+	const gameDock=document.getElementById("sidebar");
+	let dockTimer;
+	function showGameDock() {
+		if(!document.body.classList.contains("playing-game"))return;
+		clearTimeout(dockTimer);gameDock.classList.add("dock-visible");
+		dockTimer=setTimeout(()=>{if(!gameDock.matches(":hover, :focus-within")&&!dockZone.matches(":hover"))gameDock.classList.remove("dock-visible");},1500);
+	}
+	dockZone.addEventListener("pointerenter",showGameDock);
+	dockZone.addEventListener("pointerleave",showGameDock);
+	dockZone.addEventListener("pointerdown",showGameDock);
+	dockZone.addEventListener("touchstart",showGameDock,{passive:true});
+	gameDock.addEventListener("pointerenter",()=>clearTimeout(dockTimer));
+	gameDock.addEventListener("pointerleave",()=>{clearTimeout(dockTimer);dockTimer=setTimeout(()=>{if(!dockZone.matches(":hover"))gameDock.classList.remove("dock-visible");},250);});
 	const fullscreen = document.createElement("button");
 	fullscreen.id = "game-fullscreen";
 	fullscreen.type = "button";
