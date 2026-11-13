@@ -411,12 +411,15 @@
 		return false;
 	}
 
-	function renderTiles(pageEl, list) {
+	let pinnedGames;
+	try { const saved = JSON.parse(localStorage.getItem("asteria-pinned-games") || "[]"); pinnedGames = new Set(Array.isArray(saved) ? saved.filter(value => typeof value === "string") : []); } catch { pinnedGames = new Set(); }
+	function renderTiles(pageEl, list, focusPin) {
 		const grid = pageEl.querySelector(".tile-grid");
 		if (!grid) return;
 		grid.replaceChildren();
 		const query = pageEl.querySelector("#game-search")?.value.trim().toLowerCase() || "";
 		const filtered = list.filter(item => item.name.toLowerCase().includes(query));
+		if (pageEl === pages.games) filtered.sort((a, b) => Number(pinnedGames.has(b.name)) - Number(pinnedGames.has(a.name)));
 		if (pageEl === pages.games) document.getElementById("game-count").textContent = (query ? filtered.length + " / " : "") + list.length + " games";
 		for (const item of filtered) {
 			const tile = document.createElement("button");
@@ -445,7 +448,30 @@
 			tile.appendChild(thumb);
 			tile.appendChild(name);
 			tile.addEventListener("click", () => launch(item.url, item));
-			grid.appendChild(tile);
+			if (pageEl === pages.games) {
+				const card = document.createElement("div");
+				card.className = "game-card";
+				const pin = document.createElement("button");
+				pin.type = "button";
+				pin.className = "game-pin";
+				pin.setAttribute("aria-label", (pinnedGames.has(item.name) ? "unpin " : "pin ") + item.name);
+				pin.setAttribute("aria-pressed", String(pinnedGames.has(item.name)));
+				const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+				icon.setAttribute("viewBox", "0 0 24 24");
+				icon.setAttribute("aria-hidden", "true");
+				const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+				path.setAttribute("d", "m16 3 5 5-4 2-3 5-2-2-7 7-1-1 7-7-2-2 5-3z");
+				icon.append(path);
+				pin.append(icon);
+				pin.addEventListener("click", () => {
+					if (pinnedGames.has(item.name)) pinnedGames.delete(item.name); else pinnedGames.add(item.name);
+					try { localStorage.setItem("asteria-pinned-games", JSON.stringify([...pinnedGames])); } catch {}
+					renderTiles(pageEl, list, item.name);
+				});
+				card.append(tile, pin);
+				grid.append(card);
+				if (focusPin === item.name) pin.focus({ preventScroll: true });
+			} else grid.appendChild(tile);
 		}
 	}
 
